@@ -38,8 +38,11 @@ class MOEFileGenerator {
    * array(
    *   'meta' => array(
    *     'authorisingUser' => '',
-   *     'schoolId' => '',
+   *     'schoolNumber' => '',
    *     'vendorId' => ''
+   *     'collectionMonth' => 'M',
+   *     'collectionYear' => '15',
+   *     'isDraft' => true'
    *   ),
    *   'students' => array(
    *     ...one array for each student e.g.
@@ -57,6 +60,17 @@ class MOEFileGenerator {
    */
   public static function generateMOE($dataArray) {
 
+    $moeFile = new MOEFile(
+      $dataArray['meta']['schoolNumber'],
+      $dataArray['meta']['collectionMonth'],
+      $dataArray['meta']['collectionYear'],
+      $dataArray['meta']['isDraft'],
+      //TODO: Get version
+      '1',
+      self::getConfig()['moeFileDirectory']
+    );
+
+    return $moeFile->getPath();
   }
 
 }
