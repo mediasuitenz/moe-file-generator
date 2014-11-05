@@ -1,0 +1,13 @@
+{
+    "name": "linc-ed/moe-file-generator",
+    "require": {
+        "phpunit/phpunit": "~4.3"
+    },
+    "license": "proprietry",
+    "authors": [
+        {
+            "name": "Lewis Christie",
+            "email": "lewis@mediasuite.co.nz"
+        }
+    ]
+}
