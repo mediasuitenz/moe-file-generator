@@ -10,9 +10,12 @@ $testDir = dirname(__FILE__) . DIRECTORY_SEPARATOR .'moeFiles';
 function moeDataArray() {
   return array(
     'meta' => array(
+      'smsName' => 'Linc-Ed',
+      'smsVersion' => '2.8',
       'schoolNumber' => '12345',
       'collectionMonth' => 'M',
-      'collectionYear' => '15',
+      'collectionYear' => '2015',
+      'enrolmentScheme' => 'N',
       'isDraft' => true
     ),
     'students' => array(
@@ -64,18 +67,6 @@ class MOEFileGeneratorTest extends PHPUnit_Framework_TestCase {
   }
 
   public function testMOEFileHeader() {
-    // The Header in the data file consists of one line and MUST include the following, separated by a comma: 
-    // the SMS Name
-    // SMS Software version (e.g. v2015)
-    // Month and year of collection (e.g. M, 2015)
-    // The school number
-    // The total number of students on the school roll (determined by the total for table M3, E3, J3 or S3 depending on 
-    // return date)
-    // Enrolment Scheme (Y or N) and the Effective date of that scheme (as YYYYMMDD) – e.g. if School is participating in a 
-    // Ministry approved Enrolment Scheme that became effective 23 August 2004; Y, 20040823. If the School was not 
-    // participating in an Enrolment Scheme the file should read N,00000000.
-    // The end of the header line must contain both a Carriage Return(0d) and Line Feed(Oa) specifically the new line
-    // character CRLF
 
     global $testDir;
 
@@ -94,6 +85,42 @@ class MOEFileGeneratorTest extends PHPUnit_Framework_TestCase {
     $moeContents = fread($handle, filesize($fileName));
 
     fclose($handle);
+
+    // The end of the header line must contain both a Carriage Return(0d) and Line Feed(Oa) specifically the new line
+    // character CRLF
+    $this->assertSame((strpos($moeContents, "\r\n") >= 0), true);
+
+    // The Header in the data file consists of one line and MUST include the following, separated by a comma: 
+
+    $headerLine = explode("\r\n", $moeContents)[0];
+
+    $header = explode(",", $headerLine);
+
+    // the SMS Name
+    $this->assertSame($header[0], 'Linc-Ed');
+
+    // SMS Software version (e.g. v2015)
+    $this->assertSame($header[1], '2.8');
+
+    // Month and year of collection (e.g. M, 2015)
+    $this->assertSame($header[2], 'M');
+    $this->assertSame($header[3], '2015');
+
+    // The school number
+    $this->assertSame($header[4], '2');
+    
+    // The total number of students on the school roll (determined by the total for table M3, E3, J3 or S3 depending on 
+    // return date)
+    $this->assertSame(ctype_digit($header[5]), true);
+    
+    // Enrolment Scheme (Y or N) and the Effective date of that scheme (as YYYYMMDD) – e.g. if School is participating in a 
+    // Ministry approved Enrolment Scheme that became effective 23 August 2004; Y, 20040823. If the School was not 
+    // participating in an Enrolment Scheme the file should read N,00000000.
+    $this->assertSame(in_array($header[6], ['Y','N']), true);
+
+    $this->assertSame($header[7], '00000000');
+
+
   }
 
 }

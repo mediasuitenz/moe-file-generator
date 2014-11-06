@@ -37,11 +37,14 @@ class MOEFileGenerator {
    * 
    * array(
    *   'meta' => array(
+   *     'smsName' => '',
+   *     'smsVersion' => '',
+   *     'collectionMonth' => 'M',
+   *     'collectionYear' => '2015',
+   *     'enrolmentScheme' => '',
+   *     'enrolmentSchemeDate' => '',
    *     'authorisingUser' => '',
    *     'schoolNumber' => '',
-   *     'vendorId' => ''
-   *     'collectionMonth' => 'M',
-   *     'collectionYear' => '15',
    *     'isDraft' => true'
    *   ),
    *   'students' => array(
@@ -69,6 +72,24 @@ class MOEFileGenerator {
       '1',
       self::getConfig()['moeFileDirectory']
     );
+
+    $enrolmentSchemeDate = '00000000';
+    if ($dataArray['meta']['enrolmentScheme'] === 'Y') {
+      $enrolmentSchemeDate = $dataArray['meta']['enrolmentSchemeDate'];
+    }
+
+    //Write the header
+    $moeFile->writeLine(array(
+      $dataArray['meta']['smsName'],
+      $dataArray['meta']['smsVersion'],
+      $dataArray['meta']['collectionMonth'],
+      $dataArray['meta']['collectionYear'],
+      $dataArray['meta']['schoolNumber'],
+      //TODO: Calculate FTE total
+      '1010',
+      $dataArray['meta']['enrolmentScheme'],
+      $enrolmentSchemeDate
+    ));
 
     return $moeFile->getPath();
   }
