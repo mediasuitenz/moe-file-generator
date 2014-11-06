@@ -9,5 +9,8 @@
             "name": "Lewis Christie",
             "email": "lewis@mediasuite.co.nz"
         }
-    ]
+    ],
+    "autoload": {
+        "psr-4": {"MOEFileGenerator\\": "lib/"}
+    }
 }
