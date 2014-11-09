@@ -1,6 +1,7 @@
 <?php
 
 namespace MOEFileGenerator;
+use DateTimeZone, DateTime;
 
 //Load libraries installed by composer
 require 'vendor/autoload.php';
@@ -63,10 +64,13 @@ class MOEFileGenerator {
    */
   public static function generateMOE($dataArray) {
 
+    $collectionMonth = $dataArray['meta']['collectionMonth'];
+    $collectionYear = $dataArray['meta']['collectionYear'];
+
     $moeFile = new MOEFile(
       $dataArray['meta']['schoolNumber'],
-      $dataArray['meta']['collectionMonth'],
-      $dataArray['meta']['collectionYear'],
+      $collectionMonth,
+      $collectionYear,
       $dataArray['meta']['isDraft'],
       //TODO: Get version
       '1',
@@ -78,15 +82,15 @@ class MOEFileGenerator {
       $enrolmentSchemeDate = $dataArray['meta']['enrolmentSchemeDate'];
     }
 
+
     //Write the header
     $moeFile->writeLine(array(
       $dataArray['meta']['smsName'],
       $dataArray['meta']['smsVersion'],
-      $dataArray['meta']['collectionMonth'],
-      $dataArray['meta']['collectionYear'],
+      $collectionMonth,
+      $collectionYear,
       $dataArray['meta']['schoolNumber'],
-      //TODO: Calculate FTE total
-      '1010',
+      self::calculateFTETotal($collectionMonth, $collectionYear, $dataArray['students']),
       $dataArray['meta']['enrolmentScheme'],
       $enrolmentSchemeDate
     ));
@@ -94,4 +98,70 @@ class MOEFileGenerator {
     return $moeFile->getPath();
   }
 
+  /**
+   * Calculates the total FTE for students in type FF, EX, AE, RA, AD ,RE, TPREOM and TPRAOM
+   * who have FIRST ATTENDANCE before march first of collection year and last attendance null
+   * or after march first of colleciton year
+   *
+   * Based on total for table M3, E3, J3 or S3 depending on collection month
+   * @param  String $collectionMonth
+   * @param  String $collectionYear
+   * @param  Array  $studentArray
+   * @return String FTE Total
+   */
+  private static function calculateFTETotal($collectionMonth, $collectionYear, $studentArray) {
+
+    /**
+     * Returns true if student type is valid for counting roll
+     * and student start and end dates are valid for given collection date
+     * @param  DateTime $collectionDate
+     * @param  Array    $student
+     * @return boolean
+     */
+    $studentFilter = function($collectionDate, $student) {
+      $nzdt = new DateTimeZone('Pacific/Auckland');
+      $startDate = new DateTime($student['start_date'], $nzdt);
+      $lastAttendance = empty($student['LAST ATTENDANCE']) ? null : new DateTime($student['LAST ATTENDANCE'], $nzdt);
+      $validStudentTypes = array('FF', 'EX', 'AE', 'RA', 'AD', 'RE', 'TPREOM', 'TPRAOM');
+      return (in_array($student['TYPE'], $validStudentTypes) &&
+        $startDate->getTimestamp() <= $collectionDate->getTimestamp() &&
+        (is_null($lastAttendance) || $lastAttendance->getTimestamp() >= $collectionDate->getTimestamp));
+    };
+
+    // Student TYPE in [FF, EX, AE, RA, AD, RE, TPREOM, TPRAOM]
+    $collectionDate;
+    $nzdt = new DateTimeZone('Pacific/Auckland');
+    switch ($collectionMonth) {
+      case 'M':
+        // and FIRST ATTENDANCE is <=1 March 2015 or Roll count day
+        // and LAST ATTENDANCE is Null or >=1 March 2015 or roll count day
+        $collectionDate = new DateTime($collectionYear . '-03-01', $nzdt);
+        break;
+      case 'E':
+        // and FIRST ATTENDANCE is <=31 May 2015
+        // and LAST ATTENDANCE is Null or >=31 May 2015
+        $collectionDate = new DateTime($collectionYear . '-05-31');
+        break;
+      case 'J':
+        // and FIRST ATTENDANCE is <= 1 July 2015
+        // and LAST ATTENDANCE is Null or >=1 July2015
+        $collectionDate = new DateTime($collectionYear . '07-01');
+        break;
+      case 'S':
+        // and FIRST ATTENDANCE is <=2 September 2015 or Roll count day
+        // and LAST ATTENDANCE is Null or >=2 September 2015 or roll count day
+        $collectionDate = new DateTime($collectionYear . '09-02');
+        break;
+    }
+
+    $total = '0';
+
+    foreach ($studentArray as $student) {
+      if ($studentFilter($collectionDate, $student)) {
+        $total = bcadd($total, $student['FTE'], 1);
+      }
+    }
+
+    return $total;
+  }
 }
