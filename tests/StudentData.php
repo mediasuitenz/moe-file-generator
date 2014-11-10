@@ -6,7 +6,7 @@ class StudentData {
       'person_id' => '353',
       'dob' => '2003-08-29',
       'start_date' => '2008-08-29',
-      'gender' => 'Male',
+      'gender' => 'M',
       'first_name' => 'Jack',
       'last_name' => 'Harding',
       'nsn' => '132416486',

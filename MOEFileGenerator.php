@@ -44,7 +44,7 @@ class MOEFileGenerator {
    *     'collectionYear' => '2015',
    *     'enrolmentScheme' => '',
    *     'enrolmentSchemeDate' => '',
-   *     'authorisingUser' => '',
+   *     'approver' => '',
    *     'schoolNumber' => '',
    *     'isDraft' => true'
    *   ),
@@ -82,6 +82,7 @@ class MOEFileGenerator {
       $enrolmentSchemeDate = $dataArray['meta']['enrolmentSchemeDate'];
     }
 
+    $m3Data = self::calculateTableM3($collectionMonth, $collectionYear, $dataArray['students']);
 
     //Write the header
     $moeFile->writeLine(array(
@@ -90,7 +91,7 @@ class MOEFileGenerator {
       $collectionMonth,
       $collectionYear,
       $dataArray['meta']['schoolNumber'],
-      self::calculateFTETotal($collectionMonth, $collectionYear, $dataArray['students']),
+      $m3Data['total'],
       $dataArray['meta']['enrolmentScheme'],
       $enrolmentSchemeDate
     ));
@@ -366,11 +367,177 @@ class MOEFileGenerator {
       ));
     }
 
+    $nzdt = new DateTimeZone('Pacific/Auckland');
+    $now = new DateTime('now', $nzdt);
+
+    //Write Footer
+    $moeFile->writeLine(array(
+      'Footer',
+      count($dataArray['students']),
+      $now->format('Ymd'),
+      $now->format('Hi'),
+      $dataArray['meta']['approver'],
+      $now->format('Ymd'),
+      $now->format('Hi')
+    ));
+
+    $moeFile->writeLine(array(
+      'FR',
+      $m3Data['FR']['M']['1'],
+      $m3Data['FR']['M']['2'],
+      $m3Data['FR']['M']['3'],
+      $m3Data['FR']['M']['4'],
+      $m3Data['FR']['M']['5'],
+      $m3Data['FR']['M']['6'],
+      $m3Data['FR']['M']['7'],
+      $m3Data['FR']['M']['8'],
+      $m3Data['FR']['M']['9'],
+      $m3Data['FR']['M']['10'],
+      $m3Data['FR']['M']['11'],
+      $m3Data['FR']['M']['12'],
+      $m3Data['FR']['M']['13'],
+      $m3Data['FR']['M']['14'],
+      $m3Data['FR']['M']['15'],
+      $m3Data['FR']['F']['1'],
+      $m3Data['FR']['F']['2'],
+      $m3Data['FR']['F']['3'],
+      $m3Data['FR']['F']['4'],
+      $m3Data['FR']['F']['5'],
+      $m3Data['FR']['F']['6'],
+      $m3Data['FR']['F']['7'],
+      $m3Data['FR']['F']['8'],
+      $m3Data['FR']['F']['9'],
+      $m3Data['FR']['F']['10'],
+      $m3Data['FR']['F']['11'],
+      $m3Data['FR']['F']['12'],
+      $m3Data['FR']['F']['13'],
+      $m3Data['FR']['F']['14'],
+      $m3Data['FR']['F']['15']
+    ));
+    $moeFile->writeLine(array(
+      'PR',
+      $m3Data['PR']['M']['9'],
+      $m3Data['PR']['M']['10'],
+      $m3Data['PR']['M']['11'],
+      $m3Data['PR']['M']['12'],
+      $m3Data['PR']['M']['13'],
+      $m3Data['PR']['M']['14'],
+      $m3Data['PR']['M']['15'],
+      $m3Data['PR']['F']['9'],
+      $m3Data['PR']['F']['10'],
+      $m3Data['PR']['F']['11'],
+      $m3Data['PR']['F']['12'],
+      $m3Data['PR']['F']['13'],
+      $m3Data['PR']['F']['14'],
+      $m3Data['PR']['F']['15']
+    ));
+    $moeFile->writeLine(array(
+      'FA',
+      $m3Data['FA']['M']['9'],
+      $m3Data['FA']['M']['10'],
+      $m3Data['FA']['M']['11'],
+      $m3Data['FA']['M']['12'],
+      $m3Data['FA']['M']['13'],
+      $m3Data['FA']['M']['14'],
+      $m3Data['FA']['M']['15'],
+      $m3Data['FA']['F']['9'],
+      $m3Data['FA']['F']['10'],
+      $m3Data['FA']['F']['11'],
+      $m3Data['FA']['F']['12'],
+      $m3Data['FA']['F']['13'],
+      $m3Data['FA']['F']['14'],
+      $m3Data['FA']['F']['15']
+    ));
+    $moeFile->writeLine(array(
+      'PA',
+      $m3Data['PA']['M']['9'],
+      $m3Data['PA']['M']['10'],
+      $m3Data['PA']['M']['11'],
+      $m3Data['PA']['M']['12'],
+      $m3Data['PA']['M']['13'],
+      $m3Data['PA']['M']['14'],
+      $m3Data['PA']['M']['15'],
+      $m3Data['PA']['F']['9'],
+      $m3Data['PA']['F']['10'],
+      $m3Data['PA']['F']['11'],
+      $m3Data['PA']['F']['12'],
+      $m3Data['PA']['F']['13'],
+      $m3Data['PA']['F']['14'],
+      $m3Data['PA']['F']['15']
+    ));
+    $moeFile->writeLine(array(
+      'ST',
+      $m3Data['ST']['M']['9'],
+      $m3Data['ST']['M']['10'],
+      $m3Data['ST']['M']['11'],
+      $m3Data['ST']['M']['12'],
+      $m3Data['ST']['M']['13'],
+      $m3Data['ST']['M']['14'],
+      $m3Data['ST']['M']['15'],
+      $m3Data['ST']['F']['9'],
+      $m3Data['ST']['F']['10'],
+      $m3Data['ST']['F']['11'],
+      $m3Data['ST']['F']['12'],
+      $m3Data['ST']['F']['13'],
+      $m3Data['ST']['F']['14'],
+      $m3Data['ST']['F']['15']
+    ));
+    $moeFile->writeLine(array(
+      'AE',
+      $m3Data['AE']['M']['9'],
+      $m3Data['AE']['M']['10'],
+      $m3Data['AE']['M']['11'],
+      $m3Data['AE']['M']['12'],
+      $m3Data['AE']['M']['13'],
+      $m3Data['AE']['M']['14'],
+      $m3Data['AE']['M']['15'],
+      $m3Data['AE']['F']['9'],
+      $m3Data['AE']['F']['10'],
+      $m3Data['AE']['F']['11'],
+      $m3Data['AE']['F']['12'],
+      $m3Data['AE']['F']['13'],
+      $m3Data['AE']['F']['14'],
+      $m3Data['AE']['F']['15']
+    ));
+    $moeFile->writeLine(array(
+      'FF',
+      $m3Data['FF']['M']['1'],
+      $m3Data['FF']['M']['2'],
+      $m3Data['FF']['M']['3'],
+      $m3Data['FF']['M']['4'],
+      $m3Data['FF']['M']['5'],
+      $m3Data['FF']['M']['6'],
+      $m3Data['FF']['M']['7'],
+      $m3Data['FF']['M']['8'],
+      $m3Data['FF']['M']['9'],
+      $m3Data['FF']['M']['10'],
+      $m3Data['FF']['M']['11'],
+      $m3Data['FF']['M']['12'],
+      $m3Data['FF']['M']['13'],
+      $m3Data['FF']['M']['14'],
+      $m3Data['FF']['M']['15'],
+      $m3Data['FF']['F']['1'],
+      $m3Data['FF']['F']['2'],
+      $m3Data['FF']['F']['3'],
+      $m3Data['FF']['F']['4'],
+      $m3Data['FF']['F']['5'],
+      $m3Data['FF']['F']['6'],
+      $m3Data['FF']['F']['7'],
+      $m3Data['FF']['F']['8'],
+      $m3Data['FF']['F']['9'],
+      $m3Data['FF']['F']['10'],
+      $m3Data['FF']['F']['11'],
+      $m3Data['FF']['F']['12'],
+      $m3Data['FF']['F']['13'],
+      $m3Data['FF']['F']['14'],
+      $m3Data['FF']['F']['15']
+    ));
+
     return $moeFile->getPath();
   }
 
   /**
-   * Calculates the total FTE for students in type FF, EX, AE, RA, AD ,RE, TPREOM and TPRAOM
+   * Calculates the FTE for students in type FF, EX, AE, RA, AD ,RE, TPREOM and TPRAOM
    * who have FIRST ATTENDANCE before march first of collection year and last attendance null
    * or after march first of colleciton year
    *
@@ -380,7 +547,7 @@ class MOEFileGenerator {
    * @param  Array  $studentArray
    * @return String FTE Total
    */
-  private static function calculateFTETotal($collectionMonth, $collectionYear, $studentArray) {
+  private static function calculateTableM3($collectionMonth, $collectionYear, $studentArray) {
 
     /**
      * Returns true if student type is valid for counting roll
@@ -416,23 +583,104 @@ class MOEFileGenerator {
       case 'J':
         // and FIRST ATTENDANCE is <= 1 July 2015
         // and LAST ATTENDANCE is Null or >=1 July2015
-        $collectionDate = new DateTime($collectionYear . '07-01');
+        $collectionDate = new DateTime($collectionYear . '-07-01');
         break;
       case 'S':
         // and FIRST ATTENDANCE is <=2 September 2015 or Roll count day
         // and LAST ATTENDANCE is Null or >=2 September 2015 or roll count day
-        $collectionDate = new DateTime($collectionYear . '09-02');
+        $collectionDate = new DateTime($collectionYear . '-09-02');
         break;
     }
 
-    $total = '0';
+    $m3Data = array(
+      'total' => '0'
+    );
+
+    //Columns (student types)
+    //FR - Number of Full Time Regular
+    //PR - FTE of Part Time Regular
+    //FA - Full Time Adult
+    //PA - Part Time Adult
+    //ST - Secondary Tertiary Program
+    //AE - Alternative Education
+    //FF - International Fee Paying
+
+    //Fill initial totals with 0
+    $collectedTypes = ['FR', 'PR', 'FA', 'PA', 'ST', 'AE', 'FF'];
+    foreach ($collectedTypes as $type) {
+      $m3Data[$type] = array(
+        'M' => array(
+        ),
+        'F' => array(
+        )
+      );
+      for ($i = 9; $i <= 15; $i++) {
+        $m3Data[$type]['M'][$i] = '0';
+        $m3Data[$type]['F'][$i] = '0';
+      }
+    }
+    for ($i = 1; $i <= 8; $i++) {
+      $m3Data['FR']['M'][$i] = '0';
+      $m3Data['FR']['F'][$i] = '0';
+      $m3Data['FF']['M'][$i] = '0';
+      $m3Data['FF']['F'][$i] = '0';
+    }
+
+    $nzdt = new DateTimeZone('Pacific/Auckland');
+    $january1 = new DateTime($collectionYear . '-01-01', $nzdt);
+
+    $stpList = ['1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16','17','18','19','20','21','22'];
 
     foreach ($studentArray as $student) {
+
       if ($studentFilter($collectionDate, $student)) {
-        $total = bcadd($total, $student['FTE'], 1);
+
+        $yearLevel = $student['funding_year_level'];
+        $gender = $student['gender'];
+        $dob = new DateTime($student['dob'], $nzdt);
+        $ageAtJan1 = $dob->diff($january1)->y;
+
+        // Students with STP in (1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22) 
+        // should be reported in the FTE of Secondary Tertiary Programme Students 
+        // column, unless student type is FF or AE.
+        if ($student['TYPE'] === 'FF') {
+          $column = 'FF';
+        } else if ($student['TYPE'] === 'AE') {
+          $column = 'AE';
+        } else if (in_array($student['STP'], $stpList)) {
+          $column = 'ST';
+        } else {
+          if ($ageAtJan1 < 19) {
+            //Regular
+            if (bccomp($student['FTE'], '1', 1) === 0) {
+              //Full time
+              $column = 'FR';
+            } else {
+              //Part time
+              $column = 'PR';
+            }
+          } else {
+            //Adult
+            if (bccomp($student['FTE'], '1', 1) === 0) {
+              //Full time
+              $column = 'FA';
+            } else {
+              //Part time
+              $column = 'PA';
+            }
+          }
+        }
+
+        $cell = bcadd($m3Data[$column][$gender][$yearLevel], $student['FTE'], 1);
+        //Trim trailing .0
+        if (substr($cell, -2) === '.0') {
+          $cell = substr($cell, 0, strlen($cell) - 2);
+        }
+        $m3Data[$column][$gender][$yearLevel] = $cell;
+        $m3Data['total'] = bcadd($m3Data['total'], $student['FTE'], 1);
       }
     }
 
-    return $total;
+    return $m3Data;
   }
 }
