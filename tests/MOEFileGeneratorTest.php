@@ -25,11 +25,8 @@ function moeDataArray() {
 
 function readMOE($filePath) {
   $handle = fopen($filePath, 'rb');
-
   $moeContents = fread($handle, filesize($filePath));
-
   fclose($handle);
-
   return explode("\r\n", $moeContents);
 }
 
