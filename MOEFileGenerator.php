@@ -536,6 +536,14 @@ class MOEFileGenerator {
     return $moeFile->getPath();
   }
 
+  private static function studentAttendingForDate($collectionDate, $student) {
+    $nzdt = new DateTimeZone('Pacific/Auckland');
+    $startDate = new DateTime($student['start_date'], $nzdt);
+    $lastAttendance = empty($student['LAST ATTENDANCE']) ? null : new DateTime($student['LAST ATTENDANCE'], $nzdt);
+    return ($startDate->getTimestamp() <= $collectionDate->getTimestamp() &&
+      (is_null($lastAttendance) || $lastAttendance->getTimestamp() >= $collectionDate->getTimestamp));
+  }
+
   /**
    * Calculates the FTE for students in type FF, EX, AE, RA, AD ,RE, TPREOM and TPRAOM
    * who have FIRST ATTENDANCE before march first of collection year and last attendance null
@@ -557,13 +565,9 @@ class MOEFileGenerator {
      * @return boolean
      */
     $studentFilter = function($collectionDate, $student) {
-      $nzdt = new DateTimeZone('Pacific/Auckland');
-      $startDate = new DateTime($student['start_date'], $nzdt);
-      $lastAttendance = empty($student['LAST ATTENDANCE']) ? null : new DateTime($student['LAST ATTENDANCE'], $nzdt);
       $validStudentTypes = array('FF', 'EX', 'AE', 'RA', 'AD', 'RE', 'TPREOM', 'TPRAOM');
       return (in_array($student['TYPE'], $validStudentTypes) &&
-        $startDate->getTimestamp() <= $collectionDate->getTimestamp() &&
-        (is_null($lastAttendance) || $lastAttendance->getTimestamp() >= $collectionDate->getTimestamp));
+        self::studentAttendingForDate($collectionDate, $student));
     };
 
     // Student TYPE in [FF, EX, AE, RA, AD, RE, TPREOM, TPRAOM]
