@@ -83,6 +83,7 @@ class MOEFileGenerator {
     }
 
     $m3Data = self::calculateTableM3($collectionMonth, $collectionYear, $dataArray['students']);
+    $m4Data = self::calculateTableM4($collectionMonth, $collectionYear, $dataArray['students']);
 
     //Write the header
     $moeFile->writeLine(array(
@@ -381,6 +382,7 @@ class MOEFileGenerator {
       $now->format('Hi')
     ));
 
+    //M3 Table
     $moeFile->writeLine(array(
       'FR',
       $m3Data['FR']['M']['1'],
@@ -531,6 +533,134 @@ class MOEFileGenerator {
       $m3Data['FF']['F']['13'],
       $m3Data['FF']['F']['14'],
       $m3Data['FF']['F']['15']
+    ));
+
+    //M4 Table
+    $moeFile->writeLine(array(
+      'MLL1',
+      $m4Data['MLL1']['total']['1'],
+      $m4Data['MLL1']['total']['2'],
+      $m4Data['MLL1']['total']['3'],
+      $m4Data['MLL1']['total']['4'],
+      $m4Data['MLL1']['total']['5'],
+      $m4Data['MLL1']['total']['6'],
+      $m4Data['MLL1']['total']['7'],
+      $m4Data['MLL1']['total']['8'],
+      $m4Data['MLL1']['total']['9'],
+      $m4Data['MLL1']['total']['10'],
+      $m4Data['MLL1']['total']['11'],
+      $m4Data['MLL1']['total']['12'],
+      $m4Data['MLL1']['total']['13'],
+      $m4Data['MLL1']['total']['14'],
+      $m4Data['MLL1']['total']['15']
+    ));
+    $moeFile->writeLine(array(
+      'MLL2',
+      $m4Data['MLL2']['total']['1'],
+      $m4Data['MLL2']['total']['2'],
+      $m4Data['MLL2']['total']['3'],
+      $m4Data['MLL2']['total']['4'],
+      $m4Data['MLL2']['total']['5'],
+      $m4Data['MLL2']['total']['6'],
+      $m4Data['MLL2']['total']['7'],
+      $m4Data['MLL2']['total']['8'],
+      $m4Data['MLL2']['total']['9'],
+      $m4Data['MLL2']['total']['10'],
+      $m4Data['MLL2']['total']['11'],
+      $m4Data['MLL2']['total']['12'],
+      $m4Data['MLL2']['total']['13'],
+      $m4Data['MLL2']['total']['14'],
+      $m4Data['MLL2']['total']['15']
+    ));
+    $moeFile->writeLine(array(
+      'MLL3',
+      $m4Data['MLL3']['total']['1'],
+      $m4Data['MLL3']['total']['2'],
+      $m4Data['MLL3']['total']['3'],
+      $m4Data['MLL3']['total']['4'],
+      $m4Data['MLL3']['total']['5'],
+      $m4Data['MLL3']['total']['6'],
+      $m4Data['MLL3']['total']['7'],
+      $m4Data['MLL3']['total']['8'],
+      $m4Data['MLL3']['total']['9'],
+      $m4Data['MLL3']['total']['10'],
+      $m4Data['MLL3']['total']['11'],
+      $m4Data['MLL3']['total']['12'],
+      $m4Data['MLL3']['total']['13'],
+      $m4Data['MLL3']['total']['14'],
+      $m4Data['MLL3']['total']['15']
+    ));
+    $moeFile->writeLine(array(
+      'MLL4A',
+      $m4Data['MLL4A']['total']['1'],
+      $m4Data['MLL4A']['total']['2'],
+      $m4Data['MLL4A']['total']['3'],
+      $m4Data['MLL4A']['total']['4'],
+      $m4Data['MLL4A']['total']['5'],
+      $m4Data['MLL4A']['total']['6'],
+      $m4Data['MLL4A']['total']['7'],
+      $m4Data['MLL4A']['total']['8'],
+      $m4Data['MLL4A']['total']['9'],
+      $m4Data['MLL4A']['total']['10'],
+      $m4Data['MLL4A']['total']['11'],
+      $m4Data['MLL4A']['total']['12'],
+      $m4Data['MLL4A']['total']['13'],
+      $m4Data['MLL4A']['total']['14'],
+      $m4Data['MLL4A']['total']['15']
+    ));
+    $moeFile->writeLine(array(
+      'MLL4B',
+      $m4Data['MLL4B']['total']['1'],
+      $m4Data['MLL4B']['total']['2'],
+      $m4Data['MLL4B']['total']['3'],
+      $m4Data['MLL4B']['total']['4'],
+      $m4Data['MLL4B']['total']['5'],
+      $m4Data['MLL4B']['total']['6'],
+      $m4Data['MLL4B']['total']['7'],
+      $m4Data['MLL4B']['total']['8'],
+      $m4Data['MLL4B']['total']['9'],
+      $m4Data['MLL4B']['total']['10'],
+      $m4Data['MLL4B']['total']['11'],
+      $m4Data['MLL4B']['total']['12'],
+      $m4Data['MLL4B']['total']['13'],
+      $m4Data['MLL4B']['total']['14'],
+      $m4Data['MLL4B']['total']['15']
+    ));
+    $moeFile->writeLine(array(
+      'MLL5',
+      $m4Data['MLL5']['total']['1'],
+      $m4Data['MLL5']['total']['2'],
+      $m4Data['MLL5']['total']['3'],
+      $m4Data['MLL5']['total']['4'],
+      $m4Data['MLL5']['total']['5'],
+      $m4Data['MLL5']['total']['6'],
+      $m4Data['MLL5']['total']['7'],
+      $m4Data['MLL5']['total']['8'],
+      $m4Data['MLL5']['total']['9'],
+      $m4Data['MLL5']['total']['10'],
+      $m4Data['MLL5']['total']['11'],
+      $m4Data['MLL5']['total']['12'],
+      $m4Data['MLL5']['total']['13'],
+      $m4Data['MLL5']['total']['14'],
+      $m4Data['MLL5']['total']['15']
+    ));
+    $moeFile->writeLine(array(
+      'MLL6',
+      $m4Data['MLL6']['total']['1'],
+      $m4Data['MLL6']['total']['2'],
+      $m4Data['MLL6']['total']['3'],
+      $m4Data['MLL6']['total']['4'],
+      $m4Data['MLL6']['total']['5'],
+      $m4Data['MLL6']['total']['6'],
+      $m4Data['MLL6']['total']['7'],
+      $m4Data['MLL6']['total']['8'],
+      $m4Data['MLL6']['total']['9'],
+      $m4Data['MLL6']['total']['10'],
+      $m4Data['MLL6']['total']['11'],
+      $m4Data['MLL6']['total']['12'],
+      $m4Data['MLL6']['total']['13'],
+      $m4Data['MLL6']['total']['14'],
+      $m4Data['MLL6']['total']['15']
     ));
 
     return $moeFile->getPath();
@@ -686,5 +816,111 @@ class MOEFileGenerator {
     }
 
     return $m3Data;
+  }
+
+  private static function calculateTableM4($collectionMonth, $collectionYear, $students) {
+    $studentFilter = function($collectionDate, $student) {
+      // Student TYPE in [EX, RA, AD, RE, TPREOM, TPRAOM]
+      // and MĀORI=not Null
+      $allowedTypes = ['EX', 'RA', 'AD', 'RE', 'TPREOM', 'TPRAOM'];
+      return (in_array($student['TYPE'], $allowedTypes) &&
+        !empty($student['MAORI']) &&
+        self::studentAttendingForDate($collectionDate, $student));
+    };
+
+    $collectionDate;
+    //Following the spec as closely as possible - the M4 table has the same
+    //date as M3, but different dates for the other variants of the table.
+    //Especially table J7 which has a gap in the logic.
+    //TODO:
+    //Clarify date logic for these tables - should it be roll return date?
+    $nzdt = new DateTimeZone('Pacific/Auckland');
+    switch ($collectionMonth) {
+      case ('M'):
+      // and FIRST ATTENDANCE is <=1 March 2015
+      // and LAST ATTENDANCE is Null or >=1 March 2015
+        $collectionDate = new DateTime($collectionYear . '-03-01', $nzdt);
+        break;
+      case ('E'):
+        // and FIRST ATTENDANCE is <=28 May 2015
+        // and LAST ATTENDANCE is Null or >= 28 May 2015
+        $collectionDate = new DateTime($collectionYear . '-05-28', $nzdt);
+        break;
+      case ('J'):
+        // and FIRST ATTENDANCE is <=27 June 2015
+        // and LAST ATTENDANCE is Null or >=1 July 2015
+        // TODO: Clarify this inconsistency
+        $collectionDate = new DateTime($collectionYear . '-06-27', $nzdt);
+        break;
+      case ('S'):
+        // and FIRST ATTENDANCE is <=2 September 2015
+        // and LAST ATTENDANCE is Null or >=2 September 2015
+        $collectionDate = new DateTime($collectionYear . '-10-02', $nzdt);
+        break;
+    }
+
+    $m4Columns = array(
+      'MLL1',
+      'MLL2',
+      'MLL3',
+      'MLL4A',
+      'MLL4B',
+      'MLL5',
+      'MLL6'
+    );
+
+    $m4Data = array();
+
+    //Populate m4Data with 0 values
+    foreach($m4Columns as $column) {
+      $m4Data[$column] = array(
+        'total' => array(),
+        'maori' => array()
+      );
+      for ($i = 0; $i <= 15; $i++) {
+        $m4Data[$column]['total'][$i] = 0;
+        $m4Data[$column]['maori'][$i] = 0;
+      }
+    }
+    foreach($students as $student) {
+      if ($studentFilter($collectionDate, $student)) {
+        $yearLevel = $student['funding_year_level'];
+        $column;
+        switch ($student['MAORI']) {
+          case ('H'):
+            $column = 'MLL1';
+            break;
+          case ('G'):
+            $column = 'MLL1';
+            break;
+          case ('F'):
+            $column = 'MLL2';
+            break;
+          case ('E'):
+            $column = 'MLL3';
+            break;
+          case ('D'):
+            $column = 'MLL4A';
+            break;
+          case ('C'):
+            $column = 'MLL4B';
+            break;
+          case ('B'):
+            $column = 'MLL5';
+            break;
+          case ('A'):
+            $column = 'MLL6';
+            break;
+        }
+        if ($student['ethnic_origin'] == '211' ||
+          $student['ethnic_origin2'] == '211' ||
+          $student['ethnic_origin3'] == '211') {
+          $m4Data[$column]['maori'][$yearLevel]++;
+        }
+        $m4Data[$column]['total'][$yearLevel]++;
+      }
+    }
+
+    return $m4Data;
   }
 }
