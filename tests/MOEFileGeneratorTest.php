@@ -5,6 +5,8 @@ require_once(dirname(__FILE__) . DIRECTORY_SEPARATOR .
   '..' . DIRECTORY_SEPARATOR . 
   'MOEFileGenerator.php');
 
+require_once(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'StudentData.php');
+
 $testDir = dirname(__FILE__) . DIRECTORY_SEPARATOR .'moeFiles';
 
 function moeDataArray() {
@@ -135,11 +137,10 @@ class MOEFileGeneratorTest extends PHPUnit_Framework_TestCase {
     $dataArray = moeDataArray();
     $dataArray['meta']['schoolNumber'] = '3';
 
-    array_push($dataArray['students'], array(
-      'FTE' => '1',
-      'start_date' => '2008-08-29',
-      'TYPE' => 'RE'
-    ));
+    $student = StudentData::getStudent();
+    $student['FTE'] = '1';
+
+    array_push($dataArray['students'], $student);
     MOEFileGenerator\MOEFileGenerator::generateMOE($dataArray);
 
     $fileName = $testDir . DIRECTORY_SEPARATOR .
@@ -159,17 +160,13 @@ class MOEFileGeneratorTest extends PHPUnit_Framework_TestCase {
 
     $dataArray['meta']['schoolNumber'] = '4';
 
-    array_push($dataArray['students'], array(
-      'FTE' => '0.8',
-      'start_date' => '2008-08-30',
-      'TYPE' => 'RE'
-    ));
+    $student2 = StudentData::getStudent();
+    $student2['FTE'] = '0.8';
+    array_push($dataArray['students'], $student2);
 
-    array_push($dataArray['students'], array(
-      'FTE' => '0.3',
-      'start_date' => '2008-08-30',
-      'TYPE' => 'RE'
-    ));
+    $student3 = StudentData::getStudent();
+    $student3['FTE'] = '0.3';
+    array_push($dataArray['students'], $student3);
 
     MOEFileGenerator\MOEFileGenerator::generateMOE($dataArray);
 
@@ -190,11 +187,11 @@ class MOEFileGeneratorTest extends PHPUnit_Framework_TestCase {
     $dataArray = moeDataArray();
     $dataArray['meta']['schoolNumber'] = '5';
 
-    array_push($dataArray['students'], array(
-      'FTE' => '1',
-      'start_date' => '2020-08-29',
-      'TYPE' => 'RE'
-    ));
+    $student4 = StudentData::getStudent();
+    $student4['FTE'] = '1';
+    $student4['start_date'] = '2020-08-29';
+
+    array_push($dataArray['students'], $student4);
 
     MOEFileGenerator\MOEFileGenerator::generateMOE($dataArray);
 
@@ -210,6 +207,31 @@ class MOEFileGeneratorTest extends PHPUnit_Framework_TestCase {
     $studentTotal = $header[5];
 
     $this->assertSame(in_array($studentTotal, array('0', '0.0')), true);
+  }
+
+  public function testWriteStudentLine() {
+    global $testDir;
+    //Write a student line
+    $dataArray = moeDataArray();
+    $dataArray['meta']['schoolNumber'] = '6';
+
+    array_push($dataArray['students'], StudentData::getStudent());
+
+    MOEFileGenerator\MOEFileGenerator::generateMOE($dataArray);
+
+    $fileName = $testDir . DIRECTORY_SEPARATOR .
+    'DRAFT6M15' . DIRECTORY_SEPARATOR .
+    'v1' . DIRECTORY_SEPARATOR .
+    'DRAFT6M15.moe';
+
+    $moe = readMOE($fileName);
+
+    $studentLine = $moe[1];
+
+    $student = explode(',', $studentLine);
+
+    //Assert that there are 132 fields
+    $this->assertSame(count($student), 132);
   }
 
 }
