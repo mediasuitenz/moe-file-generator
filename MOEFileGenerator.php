@@ -674,6 +674,33 @@ class MOEFileGenerator {
       (is_null($lastAttendance) || $lastAttendance->getTimestamp() >= $collectionDate->getTimestamp));
   }
 
+  private static function collectionDate($collectionMonth, $collectionYear) {
+    $collectionDate;
+    $nzdt = new DateTimeZone('Pacific/Auckland');
+    switch ($collectionMonth) {
+      case 'M':
+        // and FIRST ATTENDANCE is <=1 March 2015 or Roll count day
+        // and LAST ATTENDANCE is Null or >=1 March 2015 or roll count day
+        $collectionDate = new DateTime($collectionYear . '-03-01', $nzdt);
+        break;
+      case 'E':
+        //The specs for Table E3 have an error. The cut-off date is 28 May 2015.
+        $collectionDate = new DateTime($collectionYear . '-05-28');
+        break;
+      case 'J':
+        // and FIRST ATTENDANCE is <= 1 July 2015
+        // and LAST ATTENDANCE is Null or >=1 July2015
+        $collectionDate = new DateTime($collectionYear . '-07-01');
+        break;
+      case 'S':
+        // and FIRST ATTENDANCE is <=2 September 2015 or Roll count day
+        // and LAST ATTENDANCE is Null or >=2 September 2015 or roll count day
+        $collectionDate = new DateTime($collectionYear . '-09-02');
+        break;
+    }
+    return $collectionDate;
+  }
+
   /**
    * Calculates the FTE for students in type FF, EX, AE, RA, AD ,RE, TPREOM and TPRAOM
    * who have FIRST ATTENDANCE before march first of collection year and last attendance null
@@ -700,31 +727,6 @@ class MOEFileGenerator {
         self::studentAttendingForDate($collectionDate, $student));
     };
 
-    // Student TYPE in [FF, EX, AE, RA, AD, RE, TPREOM, TPRAOM]
-    $collectionDate;
-    $nzdt = new DateTimeZone('Pacific/Auckland');
-    switch ($collectionMonth) {
-      case 'M':
-        // and FIRST ATTENDANCE is <=1 March 2015 or Roll count day
-        // and LAST ATTENDANCE is Null or >=1 March 2015 or roll count day
-        $collectionDate = new DateTime($collectionYear . '-03-01', $nzdt);
-        break;
-      case 'E':
-        // and FIRST ATTENDANCE is <=31 May 2015
-        // and LAST ATTENDANCE is Null or >=31 May 2015
-        $collectionDate = new DateTime($collectionYear . '-05-31');
-        break;
-      case 'J':
-        // and FIRST ATTENDANCE is <= 1 July 2015
-        // and LAST ATTENDANCE is Null or >=1 July2015
-        $collectionDate = new DateTime($collectionYear . '-07-01');
-        break;
-      case 'S':
-        // and FIRST ATTENDANCE is <=2 September 2015 or Roll count day
-        // and LAST ATTENDANCE is Null or >=2 September 2015 or roll count day
-        $collectionDate = new DateTime($collectionYear . '-09-02');
-        break;
-    }
 
     $m3Data = array(
       'total' => '0'
@@ -760,6 +762,7 @@ class MOEFileGenerator {
       $m3Data['FF']['F'][$i] = '0';
     }
 
+    $collectionDate = self::collectionDate($collectionMonth, $collectionYear);
     $nzdt = new DateTimeZone('Pacific/Auckland');
     $january1 = new DateTime($collectionYear . '-01-01', $nzdt);
 
@@ -828,36 +831,7 @@ class MOEFileGenerator {
         self::studentAttendingForDate($collectionDate, $student));
     };
 
-    $collectionDate;
-    //Following the spec as closely as possible - the M4 table has the same
-    //date as M3, but different dates for the other variants of the table.
-    //Especially table J7 which has a gap in the logic.
-    //TODO:
-    //Clarify date logic for these tables - should it be roll return date?
-    $nzdt = new DateTimeZone('Pacific/Auckland');
-    switch ($collectionMonth) {
-      case ('M'):
-      // and FIRST ATTENDANCE is <=1 March 2015
-      // and LAST ATTENDANCE is Null or >=1 March 2015
-        $collectionDate = new DateTime($collectionYear . '-03-01', $nzdt);
-        break;
-      case ('E'):
-        // and FIRST ATTENDANCE is <=28 May 2015
-        // and LAST ATTENDANCE is Null or >= 28 May 2015
-        $collectionDate = new DateTime($collectionYear . '-05-28', $nzdt);
-        break;
-      case ('J'):
-        // and FIRST ATTENDANCE is <=27 June 2015
-        // and LAST ATTENDANCE is Null or >=1 July 2015
-        // TODO: Clarify this inconsistency
-        $collectionDate = new DateTime($collectionYear . '-06-27', $nzdt);
-        break;
-      case ('S'):
-        // and FIRST ATTENDANCE is <=2 September 2015
-        // and LAST ATTENDANCE is Null or >=2 September 2015
-        $collectionDate = new DateTime($collectionYear . '-10-02', $nzdt);
-        break;
-    }
+    $collectionDate = self::collectionDate($collectionMonth, $collectionYear);
 
     $m4Columns = array(
       'MLL1',
