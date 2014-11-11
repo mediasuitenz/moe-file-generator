@@ -82,8 +82,8 @@ class MOEFileGenerator {
       $enrolmentSchemeDate = $dataArray['meta']['enrolmentSchemeDate'];
     }
 
-    $m3Data = self::calculateTableM3($collectionMonth, $collectionYear, $dataArray['students']);
-    $m4Data = self::calculateTableM4($collectionMonth, $collectionYear, $dataArray['students']);
+    $m3Data = self::calculateSchoolRollByType($collectionMonth, $collectionYear, $dataArray['students']);
+    $m4Data = self::calculateHighestLevelMaori($collectionMonth, $collectionYear, $dataArray['students']);
 
     //Write the header
     $moeFile->writeLine(array(
@@ -685,7 +685,7 @@ class MOEFileGenerator {
    * @param  Array  $studentArray
    * @return String FTE Total
    */
-  private static function calculateTableM3($collectionMonth, $collectionYear, $studentArray) {
+  private static function calculateSchoolRollByType($collectionMonth, $collectionYear, $studentArray) {
 
     /**
      * Returns true if student type is valid for counting roll
@@ -818,7 +818,7 @@ class MOEFileGenerator {
     return $m3Data;
   }
 
-  private static function calculateTableM4($collectionMonth, $collectionYear, $students) {
+  private static function calculateHighestLevelMaori($collectionMonth, $collectionYear, $students) {
     $studentFilter = function($collectionDate, $student) {
       // Student TYPE in [EX, RA, AD, RE, TPREOM, TPRAOM]
       // and MĀORI=not Null
