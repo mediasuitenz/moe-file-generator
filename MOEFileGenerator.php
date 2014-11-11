@@ -763,11 +763,13 @@ class MOEFileGenerator {
         'F' => array(
         )
       );
+      //All student types get values from 9 to 15 (secondary)
       for ($i = 9; $i <= 15; $i++) {
         $rollByType[$type]['M'][$i] = '0';
         $rollByType[$type]['F'][$i] = '0';
       }
     }
+    //FR  and FF get additional values from 1 to 8 (primary)
     for ($i = 1; $i <= 8; $i++) {
       $rollByType['FR']['M'][$i] = '0';
       $rollByType['FR']['F'][$i] = '0';
@@ -790,7 +792,7 @@ class MOEFileGenerator {
         $dob = new DateTime($student['dob'], $nzdt);
         $ageAtJan1 = $dob->diff($january1)->y;
 
-        // Students with STP in (1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22) 
+        // Students with STP (Secondary Tertiary Programme) in (1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22) 
         // should be reported in the FTE of Secondary Tertiary Programme Students 
         // column, unless student type is FF or AE.
         if ($student['TYPE'] === 'FF') {
