@@ -29,7 +29,7 @@ class StudentData {
       'citizenship' => 'NZL',
       'FEE' => '',
       'FTE' => '1',
-      'MAORI' => 'N/A',
+      'MAORI' => 'C',
       'LAST ATTENDANCE'=>'',
       'NQF QUAL' => '55',
       'REASON' => '',

@@ -880,7 +880,8 @@ class MOEFileGenerator {
     foreach($students as $student) {
       if ($studentFilter($collectionDate, $student)) {
         $yearLevel = $student['funding_year_level'];
-        $column;
+        //Column was being re-used here from last loop
+        $column = null;
         switch ($student['MAORI']) {
           case ('H'):
             $column = 'MLL1';
