@@ -82,8 +82,8 @@ class MOEFileGenerator {
       $enrolmentSchemeDate = $dataArray['meta']['enrolmentSchemeDate'];
     }
 
-    $m3Data = self::calculateSchoolRollByType($collectionMonth, $collectionYear, $dataArray['students']);
-    $m4Data = self::calculateHighestLevelMaori($collectionMonth, $collectionYear, $dataArray['students']);
+    $schoolRollByType = self::calculateSchoolRollByType($collectionMonth, $collectionYear, $dataArray['students']);
+    $highestLevelMaori = self::calculateHighestLevelMaori($collectionMonth, $collectionYear, $dataArray['students']);
 
     //Write the header
     $moeFile->writeLine(array(
@@ -92,7 +92,7 @@ class MOEFileGenerator {
       $collectionMonth,
       $collectionYear,
       $dataArray['meta']['schoolNumber'],
-      $m3Data['total'],
+      $schoolRollByType['total'],
       $dataArray['meta']['enrolmentScheme'],
       $enrolmentSchemeDate
     ));
@@ -382,285 +382,285 @@ class MOEFileGenerator {
       $now->format('Hi')
     ));
 
-    //M3 Table
+    //M3 Table equivalent
     $moeFile->writeLine(array(
       'FR',
-      $m3Data['FR']['M']['1'],
-      $m3Data['FR']['M']['2'],
-      $m3Data['FR']['M']['3'],
-      $m3Data['FR']['M']['4'],
-      $m3Data['FR']['M']['5'],
-      $m3Data['FR']['M']['6'],
-      $m3Data['FR']['M']['7'],
-      $m3Data['FR']['M']['8'],
-      $m3Data['FR']['M']['9'],
-      $m3Data['FR']['M']['10'],
-      $m3Data['FR']['M']['11'],
-      $m3Data['FR']['M']['12'],
-      $m3Data['FR']['M']['13'],
-      $m3Data['FR']['M']['14'],
-      $m3Data['FR']['M']['15'],
-      $m3Data['FR']['F']['1'],
-      $m3Data['FR']['F']['2'],
-      $m3Data['FR']['F']['3'],
-      $m3Data['FR']['F']['4'],
-      $m3Data['FR']['F']['5'],
-      $m3Data['FR']['F']['6'],
-      $m3Data['FR']['F']['7'],
-      $m3Data['FR']['F']['8'],
-      $m3Data['FR']['F']['9'],
-      $m3Data['FR']['F']['10'],
-      $m3Data['FR']['F']['11'],
-      $m3Data['FR']['F']['12'],
-      $m3Data['FR']['F']['13'],
-      $m3Data['FR']['F']['14'],
-      $m3Data['FR']['F']['15']
+      $schoolRollByType['FR']['M']['1'],
+      $schoolRollByType['FR']['M']['2'],
+      $schoolRollByType['FR']['M']['3'],
+      $schoolRollByType['FR']['M']['4'],
+      $schoolRollByType['FR']['M']['5'],
+      $schoolRollByType['FR']['M']['6'],
+      $schoolRollByType['FR']['M']['7'],
+      $schoolRollByType['FR']['M']['8'],
+      $schoolRollByType['FR']['M']['9'],
+      $schoolRollByType['FR']['M']['10'],
+      $schoolRollByType['FR']['M']['11'],
+      $schoolRollByType['FR']['M']['12'],
+      $schoolRollByType['FR']['M']['13'],
+      $schoolRollByType['FR']['M']['14'],
+      $schoolRollByType['FR']['M']['15'],
+      $schoolRollByType['FR']['F']['1'],
+      $schoolRollByType['FR']['F']['2'],
+      $schoolRollByType['FR']['F']['3'],
+      $schoolRollByType['FR']['F']['4'],
+      $schoolRollByType['FR']['F']['5'],
+      $schoolRollByType['FR']['F']['6'],
+      $schoolRollByType['FR']['F']['7'],
+      $schoolRollByType['FR']['F']['8'],
+      $schoolRollByType['FR']['F']['9'],
+      $schoolRollByType['FR']['F']['10'],
+      $schoolRollByType['FR']['F']['11'],
+      $schoolRollByType['FR']['F']['12'],
+      $schoolRollByType['FR']['F']['13'],
+      $schoolRollByType['FR']['F']['14'],
+      $schoolRollByType['FR']['F']['15']
     ));
     $moeFile->writeLine(array(
       'PR',
-      $m3Data['PR']['M']['9'],
-      $m3Data['PR']['M']['10'],
-      $m3Data['PR']['M']['11'],
-      $m3Data['PR']['M']['12'],
-      $m3Data['PR']['M']['13'],
-      $m3Data['PR']['M']['14'],
-      $m3Data['PR']['M']['15'],
-      $m3Data['PR']['F']['9'],
-      $m3Data['PR']['F']['10'],
-      $m3Data['PR']['F']['11'],
-      $m3Data['PR']['F']['12'],
-      $m3Data['PR']['F']['13'],
-      $m3Data['PR']['F']['14'],
-      $m3Data['PR']['F']['15']
+      $schoolRollByType['PR']['M']['9'],
+      $schoolRollByType['PR']['M']['10'],
+      $schoolRollByType['PR']['M']['11'],
+      $schoolRollByType['PR']['M']['12'],
+      $schoolRollByType['PR']['M']['13'],
+      $schoolRollByType['PR']['M']['14'],
+      $schoolRollByType['PR']['M']['15'],
+      $schoolRollByType['PR']['F']['9'],
+      $schoolRollByType['PR']['F']['10'],
+      $schoolRollByType['PR']['F']['11'],
+      $schoolRollByType['PR']['F']['12'],
+      $schoolRollByType['PR']['F']['13'],
+      $schoolRollByType['PR']['F']['14'],
+      $schoolRollByType['PR']['F']['15']
     ));
     $moeFile->writeLine(array(
       'FA',
-      $m3Data['FA']['M']['9'],
-      $m3Data['FA']['M']['10'],
-      $m3Data['FA']['M']['11'],
-      $m3Data['FA']['M']['12'],
-      $m3Data['FA']['M']['13'],
-      $m3Data['FA']['M']['14'],
-      $m3Data['FA']['M']['15'],
-      $m3Data['FA']['F']['9'],
-      $m3Data['FA']['F']['10'],
-      $m3Data['FA']['F']['11'],
-      $m3Data['FA']['F']['12'],
-      $m3Data['FA']['F']['13'],
-      $m3Data['FA']['F']['14'],
-      $m3Data['FA']['F']['15']
+      $schoolRollByType['FA']['M']['9'],
+      $schoolRollByType['FA']['M']['10'],
+      $schoolRollByType['FA']['M']['11'],
+      $schoolRollByType['FA']['M']['12'],
+      $schoolRollByType['FA']['M']['13'],
+      $schoolRollByType['FA']['M']['14'],
+      $schoolRollByType['FA']['M']['15'],
+      $schoolRollByType['FA']['F']['9'],
+      $schoolRollByType['FA']['F']['10'],
+      $schoolRollByType['FA']['F']['11'],
+      $schoolRollByType['FA']['F']['12'],
+      $schoolRollByType['FA']['F']['13'],
+      $schoolRollByType['FA']['F']['14'],
+      $schoolRollByType['FA']['F']['15']
     ));
     $moeFile->writeLine(array(
       'PA',
-      $m3Data['PA']['M']['9'],
-      $m3Data['PA']['M']['10'],
-      $m3Data['PA']['M']['11'],
-      $m3Data['PA']['M']['12'],
-      $m3Data['PA']['M']['13'],
-      $m3Data['PA']['M']['14'],
-      $m3Data['PA']['M']['15'],
-      $m3Data['PA']['F']['9'],
-      $m3Data['PA']['F']['10'],
-      $m3Data['PA']['F']['11'],
-      $m3Data['PA']['F']['12'],
-      $m3Data['PA']['F']['13'],
-      $m3Data['PA']['F']['14'],
-      $m3Data['PA']['F']['15']
+      $schoolRollByType['PA']['M']['9'],
+      $schoolRollByType['PA']['M']['10'],
+      $schoolRollByType['PA']['M']['11'],
+      $schoolRollByType['PA']['M']['12'],
+      $schoolRollByType['PA']['M']['13'],
+      $schoolRollByType['PA']['M']['14'],
+      $schoolRollByType['PA']['M']['15'],
+      $schoolRollByType['PA']['F']['9'],
+      $schoolRollByType['PA']['F']['10'],
+      $schoolRollByType['PA']['F']['11'],
+      $schoolRollByType['PA']['F']['12'],
+      $schoolRollByType['PA']['F']['13'],
+      $schoolRollByType['PA']['F']['14'],
+      $schoolRollByType['PA']['F']['15']
     ));
     $moeFile->writeLine(array(
       'ST',
-      $m3Data['ST']['M']['9'],
-      $m3Data['ST']['M']['10'],
-      $m3Data['ST']['M']['11'],
-      $m3Data['ST']['M']['12'],
-      $m3Data['ST']['M']['13'],
-      $m3Data['ST']['M']['14'],
-      $m3Data['ST']['M']['15'],
-      $m3Data['ST']['F']['9'],
-      $m3Data['ST']['F']['10'],
-      $m3Data['ST']['F']['11'],
-      $m3Data['ST']['F']['12'],
-      $m3Data['ST']['F']['13'],
-      $m3Data['ST']['F']['14'],
-      $m3Data['ST']['F']['15']
+      $schoolRollByType['ST']['M']['9'],
+      $schoolRollByType['ST']['M']['10'],
+      $schoolRollByType['ST']['M']['11'],
+      $schoolRollByType['ST']['M']['12'],
+      $schoolRollByType['ST']['M']['13'],
+      $schoolRollByType['ST']['M']['14'],
+      $schoolRollByType['ST']['M']['15'],
+      $schoolRollByType['ST']['F']['9'],
+      $schoolRollByType['ST']['F']['10'],
+      $schoolRollByType['ST']['F']['11'],
+      $schoolRollByType['ST']['F']['12'],
+      $schoolRollByType['ST']['F']['13'],
+      $schoolRollByType['ST']['F']['14'],
+      $schoolRollByType['ST']['F']['15']
     ));
     $moeFile->writeLine(array(
       'AE',
-      $m3Data['AE']['M']['9'],
-      $m3Data['AE']['M']['10'],
-      $m3Data['AE']['M']['11'],
-      $m3Data['AE']['M']['12'],
-      $m3Data['AE']['M']['13'],
-      $m3Data['AE']['M']['14'],
-      $m3Data['AE']['M']['15'],
-      $m3Data['AE']['F']['9'],
-      $m3Data['AE']['F']['10'],
-      $m3Data['AE']['F']['11'],
-      $m3Data['AE']['F']['12'],
-      $m3Data['AE']['F']['13'],
-      $m3Data['AE']['F']['14'],
-      $m3Data['AE']['F']['15']
+      $schoolRollByType['AE']['M']['9'],
+      $schoolRollByType['AE']['M']['10'],
+      $schoolRollByType['AE']['M']['11'],
+      $schoolRollByType['AE']['M']['12'],
+      $schoolRollByType['AE']['M']['13'],
+      $schoolRollByType['AE']['M']['14'],
+      $schoolRollByType['AE']['M']['15'],
+      $schoolRollByType['AE']['F']['9'],
+      $schoolRollByType['AE']['F']['10'],
+      $schoolRollByType['AE']['F']['11'],
+      $schoolRollByType['AE']['F']['12'],
+      $schoolRollByType['AE']['F']['13'],
+      $schoolRollByType['AE']['F']['14'],
+      $schoolRollByType['AE']['F']['15']
     ));
     $moeFile->writeLine(array(
       'FF',
-      $m3Data['FF']['M']['1'],
-      $m3Data['FF']['M']['2'],
-      $m3Data['FF']['M']['3'],
-      $m3Data['FF']['M']['4'],
-      $m3Data['FF']['M']['5'],
-      $m3Data['FF']['M']['6'],
-      $m3Data['FF']['M']['7'],
-      $m3Data['FF']['M']['8'],
-      $m3Data['FF']['M']['9'],
-      $m3Data['FF']['M']['10'],
-      $m3Data['FF']['M']['11'],
-      $m3Data['FF']['M']['12'],
-      $m3Data['FF']['M']['13'],
-      $m3Data['FF']['M']['14'],
-      $m3Data['FF']['M']['15'],
-      $m3Data['FF']['F']['1'],
-      $m3Data['FF']['F']['2'],
-      $m3Data['FF']['F']['3'],
-      $m3Data['FF']['F']['4'],
-      $m3Data['FF']['F']['5'],
-      $m3Data['FF']['F']['6'],
-      $m3Data['FF']['F']['7'],
-      $m3Data['FF']['F']['8'],
-      $m3Data['FF']['F']['9'],
-      $m3Data['FF']['F']['10'],
-      $m3Data['FF']['F']['11'],
-      $m3Data['FF']['F']['12'],
-      $m3Data['FF']['F']['13'],
-      $m3Data['FF']['F']['14'],
-      $m3Data['FF']['F']['15']
+      $schoolRollByType['FF']['M']['1'],
+      $schoolRollByType['FF']['M']['2'],
+      $schoolRollByType['FF']['M']['3'],
+      $schoolRollByType['FF']['M']['4'],
+      $schoolRollByType['FF']['M']['5'],
+      $schoolRollByType['FF']['M']['6'],
+      $schoolRollByType['FF']['M']['7'],
+      $schoolRollByType['FF']['M']['8'],
+      $schoolRollByType['FF']['M']['9'],
+      $schoolRollByType['FF']['M']['10'],
+      $schoolRollByType['FF']['M']['11'],
+      $schoolRollByType['FF']['M']['12'],
+      $schoolRollByType['FF']['M']['13'],
+      $schoolRollByType['FF']['M']['14'],
+      $schoolRollByType['FF']['M']['15'],
+      $schoolRollByType['FF']['F']['1'],
+      $schoolRollByType['FF']['F']['2'],
+      $schoolRollByType['FF']['F']['3'],
+      $schoolRollByType['FF']['F']['4'],
+      $schoolRollByType['FF']['F']['5'],
+      $schoolRollByType['FF']['F']['6'],
+      $schoolRollByType['FF']['F']['7'],
+      $schoolRollByType['FF']['F']['8'],
+      $schoolRollByType['FF']['F']['9'],
+      $schoolRollByType['FF']['F']['10'],
+      $schoolRollByType['FF']['F']['11'],
+      $schoolRollByType['FF']['F']['12'],
+      $schoolRollByType['FF']['F']['13'],
+      $schoolRollByType['FF']['F']['14'],
+      $schoolRollByType['FF']['F']['15']
     ));
 
-    //M4 Table
+    //M4 Table equivalent
     $moeFile->writeLine(array(
       'MLL1',
-      $m4Data['MLL1']['total']['1'],
-      $m4Data['MLL1']['total']['2'],
-      $m4Data['MLL1']['total']['3'],
-      $m4Data['MLL1']['total']['4'],
-      $m4Data['MLL1']['total']['5'],
-      $m4Data['MLL1']['total']['6'],
-      $m4Data['MLL1']['total']['7'],
-      $m4Data['MLL1']['total']['8'],
-      $m4Data['MLL1']['total']['9'],
-      $m4Data['MLL1']['total']['10'],
-      $m4Data['MLL1']['total']['11'],
-      $m4Data['MLL1']['total']['12'],
-      $m4Data['MLL1']['total']['13'],
-      $m4Data['MLL1']['total']['14'],
-      $m4Data['MLL1']['total']['15']
+      $highestLevelMaori['MLL1']['total']['1'],
+      $highestLevelMaori['MLL1']['total']['2'],
+      $highestLevelMaori['MLL1']['total']['3'],
+      $highestLevelMaori['MLL1']['total']['4'],
+      $highestLevelMaori['MLL1']['total']['5'],
+      $highestLevelMaori['MLL1']['total']['6'],
+      $highestLevelMaori['MLL1']['total']['7'],
+      $highestLevelMaori['MLL1']['total']['8'],
+      $highestLevelMaori['MLL1']['total']['9'],
+      $highestLevelMaori['MLL1']['total']['10'],
+      $highestLevelMaori['MLL1']['total']['11'],
+      $highestLevelMaori['MLL1']['total']['12'],
+      $highestLevelMaori['MLL1']['total']['13'],
+      $highestLevelMaori['MLL1']['total']['14'],
+      $highestLevelMaori['MLL1']['total']['15']
     ));
     $moeFile->writeLine(array(
       'MLL2',
-      $m4Data['MLL2']['total']['1'],
-      $m4Data['MLL2']['total']['2'],
-      $m4Data['MLL2']['total']['3'],
-      $m4Data['MLL2']['total']['4'],
-      $m4Data['MLL2']['total']['5'],
-      $m4Data['MLL2']['total']['6'],
-      $m4Data['MLL2']['total']['7'],
-      $m4Data['MLL2']['total']['8'],
-      $m4Data['MLL2']['total']['9'],
-      $m4Data['MLL2']['total']['10'],
-      $m4Data['MLL2']['total']['11'],
-      $m4Data['MLL2']['total']['12'],
-      $m4Data['MLL2']['total']['13'],
-      $m4Data['MLL2']['total']['14'],
-      $m4Data['MLL2']['total']['15']
+      $highestLevelMaori['MLL2']['total']['1'],
+      $highestLevelMaori['MLL2']['total']['2'],
+      $highestLevelMaori['MLL2']['total']['3'],
+      $highestLevelMaori['MLL2']['total']['4'],
+      $highestLevelMaori['MLL2']['total']['5'],
+      $highestLevelMaori['MLL2']['total']['6'],
+      $highestLevelMaori['MLL2']['total']['7'],
+      $highestLevelMaori['MLL2']['total']['8'],
+      $highestLevelMaori['MLL2']['total']['9'],
+      $highestLevelMaori['MLL2']['total']['10'],
+      $highestLevelMaori['MLL2']['total']['11'],
+      $highestLevelMaori['MLL2']['total']['12'],
+      $highestLevelMaori['MLL2']['total']['13'],
+      $highestLevelMaori['MLL2']['total']['14'],
+      $highestLevelMaori['MLL2']['total']['15']
     ));
     $moeFile->writeLine(array(
       'MLL3',
-      $m4Data['MLL3']['total']['1'],
-      $m4Data['MLL3']['total']['2'],
-      $m4Data['MLL3']['total']['3'],
-      $m4Data['MLL3']['total']['4'],
-      $m4Data['MLL3']['total']['5'],
-      $m4Data['MLL3']['total']['6'],
-      $m4Data['MLL3']['total']['7'],
-      $m4Data['MLL3']['total']['8'],
-      $m4Data['MLL3']['total']['9'],
-      $m4Data['MLL3']['total']['10'],
-      $m4Data['MLL3']['total']['11'],
-      $m4Data['MLL3']['total']['12'],
-      $m4Data['MLL3']['total']['13'],
-      $m4Data['MLL3']['total']['14'],
-      $m4Data['MLL3']['total']['15']
+      $highestLevelMaori['MLL3']['total']['1'],
+      $highestLevelMaori['MLL3']['total']['2'],
+      $highestLevelMaori['MLL3']['total']['3'],
+      $highestLevelMaori['MLL3']['total']['4'],
+      $highestLevelMaori['MLL3']['total']['5'],
+      $highestLevelMaori['MLL3']['total']['6'],
+      $highestLevelMaori['MLL3']['total']['7'],
+      $highestLevelMaori['MLL3']['total']['8'],
+      $highestLevelMaori['MLL3']['total']['9'],
+      $highestLevelMaori['MLL3']['total']['10'],
+      $highestLevelMaori['MLL3']['total']['11'],
+      $highestLevelMaori['MLL3']['total']['12'],
+      $highestLevelMaori['MLL3']['total']['13'],
+      $highestLevelMaori['MLL3']['total']['14'],
+      $highestLevelMaori['MLL3']['total']['15']
     ));
     $moeFile->writeLine(array(
       'MLL4A',
-      $m4Data['MLL4A']['total']['1'],
-      $m4Data['MLL4A']['total']['2'],
-      $m4Data['MLL4A']['total']['3'],
-      $m4Data['MLL4A']['total']['4'],
-      $m4Data['MLL4A']['total']['5'],
-      $m4Data['MLL4A']['total']['6'],
-      $m4Data['MLL4A']['total']['7'],
-      $m4Data['MLL4A']['total']['8'],
-      $m4Data['MLL4A']['total']['9'],
-      $m4Data['MLL4A']['total']['10'],
-      $m4Data['MLL4A']['total']['11'],
-      $m4Data['MLL4A']['total']['12'],
-      $m4Data['MLL4A']['total']['13'],
-      $m4Data['MLL4A']['total']['14'],
-      $m4Data['MLL4A']['total']['15']
+      $highestLevelMaori['MLL4A']['total']['1'],
+      $highestLevelMaori['MLL4A']['total']['2'],
+      $highestLevelMaori['MLL4A']['total']['3'],
+      $highestLevelMaori['MLL4A']['total']['4'],
+      $highestLevelMaori['MLL4A']['total']['5'],
+      $highestLevelMaori['MLL4A']['total']['6'],
+      $highestLevelMaori['MLL4A']['total']['7'],
+      $highestLevelMaori['MLL4A']['total']['8'],
+      $highestLevelMaori['MLL4A']['total']['9'],
+      $highestLevelMaori['MLL4A']['total']['10'],
+      $highestLevelMaori['MLL4A']['total']['11'],
+      $highestLevelMaori['MLL4A']['total']['12'],
+      $highestLevelMaori['MLL4A']['total']['13'],
+      $highestLevelMaori['MLL4A']['total']['14'],
+      $highestLevelMaori['MLL4A']['total']['15']
     ));
     $moeFile->writeLine(array(
       'MLL4B',
-      $m4Data['MLL4B']['total']['1'],
-      $m4Data['MLL4B']['total']['2'],
-      $m4Data['MLL4B']['total']['3'],
-      $m4Data['MLL4B']['total']['4'],
-      $m4Data['MLL4B']['total']['5'],
-      $m4Data['MLL4B']['total']['6'],
-      $m4Data['MLL4B']['total']['7'],
-      $m4Data['MLL4B']['total']['8'],
-      $m4Data['MLL4B']['total']['9'],
-      $m4Data['MLL4B']['total']['10'],
-      $m4Data['MLL4B']['total']['11'],
-      $m4Data['MLL4B']['total']['12'],
-      $m4Data['MLL4B']['total']['13'],
-      $m4Data['MLL4B']['total']['14'],
-      $m4Data['MLL4B']['total']['15']
+      $highestLevelMaori['MLL4B']['total']['1'],
+      $highestLevelMaori['MLL4B']['total']['2'],
+      $highestLevelMaori['MLL4B']['total']['3'],
+      $highestLevelMaori['MLL4B']['total']['4'],
+      $highestLevelMaori['MLL4B']['total']['5'],
+      $highestLevelMaori['MLL4B']['total']['6'],
+      $highestLevelMaori['MLL4B']['total']['7'],
+      $highestLevelMaori['MLL4B']['total']['8'],
+      $highestLevelMaori['MLL4B']['total']['9'],
+      $highestLevelMaori['MLL4B']['total']['10'],
+      $highestLevelMaori['MLL4B']['total']['11'],
+      $highestLevelMaori['MLL4B']['total']['12'],
+      $highestLevelMaori['MLL4B']['total']['13'],
+      $highestLevelMaori['MLL4B']['total']['14'],
+      $highestLevelMaori['MLL4B']['total']['15']
     ));
     $moeFile->writeLine(array(
       'MLL5',
-      $m4Data['MLL5']['total']['1'],
-      $m4Data['MLL5']['total']['2'],
-      $m4Data['MLL5']['total']['3'],
-      $m4Data['MLL5']['total']['4'],
-      $m4Data['MLL5']['total']['5'],
-      $m4Data['MLL5']['total']['6'],
-      $m4Data['MLL5']['total']['7'],
-      $m4Data['MLL5']['total']['8'],
-      $m4Data['MLL5']['total']['9'],
-      $m4Data['MLL5']['total']['10'],
-      $m4Data['MLL5']['total']['11'],
-      $m4Data['MLL5']['total']['12'],
-      $m4Data['MLL5']['total']['13'],
-      $m4Data['MLL5']['total']['14'],
-      $m4Data['MLL5']['total']['15']
+      $highestLevelMaori['MLL5']['total']['1'],
+      $highestLevelMaori['MLL5']['total']['2'],
+      $highestLevelMaori['MLL5']['total']['3'],
+      $highestLevelMaori['MLL5']['total']['4'],
+      $highestLevelMaori['MLL5']['total']['5'],
+      $highestLevelMaori['MLL5']['total']['6'],
+      $highestLevelMaori['MLL5']['total']['7'],
+      $highestLevelMaori['MLL5']['total']['8'],
+      $highestLevelMaori['MLL5']['total']['9'],
+      $highestLevelMaori['MLL5']['total']['10'],
+      $highestLevelMaori['MLL5']['total']['11'],
+      $highestLevelMaori['MLL5']['total']['12'],
+      $highestLevelMaori['MLL5']['total']['13'],
+      $highestLevelMaori['MLL5']['total']['14'],
+      $highestLevelMaori['MLL5']['total']['15']
     ));
     $moeFile->writeLine(array(
       'MLL6',
-      $m4Data['MLL6']['total']['1'],
-      $m4Data['MLL6']['total']['2'],
-      $m4Data['MLL6']['total']['3'],
-      $m4Data['MLL6']['total']['4'],
-      $m4Data['MLL6']['total']['5'],
-      $m4Data['MLL6']['total']['6'],
-      $m4Data['MLL6']['total']['7'],
-      $m4Data['MLL6']['total']['8'],
-      $m4Data['MLL6']['total']['9'],
-      $m4Data['MLL6']['total']['10'],
-      $m4Data['MLL6']['total']['11'],
-      $m4Data['MLL6']['total']['12'],
-      $m4Data['MLL6']['total']['13'],
-      $m4Data['MLL6']['total']['14'],
-      $m4Data['MLL6']['total']['15']
+      $highestLevelMaori['MLL6']['total']['1'],
+      $highestLevelMaori['MLL6']['total']['2'],
+      $highestLevelMaori['MLL6']['total']['3'],
+      $highestLevelMaori['MLL6']['total']['4'],
+      $highestLevelMaori['MLL6']['total']['5'],
+      $highestLevelMaori['MLL6']['total']['6'],
+      $highestLevelMaori['MLL6']['total']['7'],
+      $highestLevelMaori['MLL6']['total']['8'],
+      $highestLevelMaori['MLL6']['total']['9'],
+      $highestLevelMaori['MLL6']['total']['10'],
+      $highestLevelMaori['MLL6']['total']['11'],
+      $highestLevelMaori['MLL6']['total']['12'],
+      $highestLevelMaori['MLL6']['total']['13'],
+      $highestLevelMaori['MLL6']['total']['14'],
+      $highestLevelMaori['MLL6']['total']['15']
     ));
 
     return $moeFile->getPath();
@@ -741,7 +741,7 @@ class MOEFileGenerator {
     };
 
 
-    $m3Data = array(
+    $rollByType = array(
       'total' => '0'
     );
 
@@ -757,22 +757,22 @@ class MOEFileGenerator {
     //Fill initial totals with 0
     $collectedTypes = ['FR', 'PR', 'FA', 'PA', 'ST', 'AE', 'FF'];
     foreach ($collectedTypes as $type) {
-      $m3Data[$type] = array(
+      $rollByType[$type] = array(
         'M' => array(
         ),
         'F' => array(
         )
       );
       for ($i = 9; $i <= 15; $i++) {
-        $m3Data[$type]['M'][$i] = '0';
-        $m3Data[$type]['F'][$i] = '0';
+        $rollByType[$type]['M'][$i] = '0';
+        $rollByType[$type]['F'][$i] = '0';
       }
     }
     for ($i = 1; $i <= 8; $i++) {
-      $m3Data['FR']['M'][$i] = '0';
-      $m3Data['FR']['F'][$i] = '0';
-      $m3Data['FF']['M'][$i] = '0';
-      $m3Data['FF']['F'][$i] = '0';
+      $rollByType['FR']['M'][$i] = '0';
+      $rollByType['FR']['F'][$i] = '0';
+      $rollByType['FF']['M'][$i] = '0';
+      $rollByType['FF']['F'][$i] = '0';
     }
 
     $collectionDate = self::collectionDate($collectionMonth, $collectionYear);
@@ -821,17 +821,17 @@ class MOEFileGenerator {
           }
         }
 
-        $cell = bcadd($m3Data[$column][$gender][$yearLevel], $student['FTE'], 1);
+        $cell = bcadd($rollByType[$column][$gender][$yearLevel], $student['FTE'], 1);
         //Trim trailing .0
         if (substr($cell, -2) === '.0') {
           $cell = substr($cell, 0, strlen($cell) - 2);
         }
-        $m3Data[$column][$gender][$yearLevel] = $cell;
-        $m3Data['total'] = bcadd($m3Data['total'], $student['FTE'], 1);
+        $rollByType[$column][$gender][$yearLevel] = $cell;
+        $rollByType['total'] = bcadd($rollByType['total'], $student['FTE'], 1);
       }
     }
 
-    return $m3Data;
+    return $rollByType;
   }
 
   /**
@@ -864,17 +864,17 @@ class MOEFileGenerator {
       'MLL6'
     );
 
-    $m4Data = array();
+    $highestLevelMaori = array();
 
-    //Populate m4Data with 0 values
+    //Populate highestLevelMaori with 0 values
     foreach($m4Columns as $column) {
-      $m4Data[$column] = array(
+      $highestLevelMaori[$column] = array(
         'total' => array(),
         'maori' => array()
       );
       for ($i = 0; $i <= 15; $i++) {
-        $m4Data[$column]['total'][$i] = 0;
-        $m4Data[$column]['maori'][$i] = 0;
+        $highestLevelMaori[$column]['total'][$i] = 0;
+        $highestLevelMaori[$column]['maori'][$i] = 0;
       }
     }
     foreach($students as $student) {
@@ -912,13 +912,13 @@ class MOEFileGenerator {
         if ($student['ethnic_origin'] == '211' ||
           $student['ethnic_origin2'] == '211' ||
           $student['ethnic_origin3'] == '211') {
-          $m4Data[$column]['maori'][$yearLevel]++;
+          $highestLevelMaori[$column]['maori'][$yearLevel]++;
         }
         //All students regardless of race 
-        $m4Data[$column]['total'][$yearLevel]++;
+        $highestLevelMaori[$column]['total'][$yearLevel]++;
       }
     }
 
-    return $m4Data;
+    return $highestLevelMaori;
   }
 }
