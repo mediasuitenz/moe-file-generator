@@ -643,6 +643,12 @@ class MOEFileGenerator {
       $highestLevelMaori['MLL6']['total']['15']
     ));
 
+    //Write to audit log
+    $action = 'Created new .moe file at ' . $moeFile->getPath();
+    DBUtil::getConnection()->perform('INSERT INTO `moe_audit_log` (`action`) VALUES (:action)', array(
+      'action' => $action
+    ));
+
     return $moeFile->getPath();
   }
 
