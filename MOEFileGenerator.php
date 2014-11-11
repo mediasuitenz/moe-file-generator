@@ -666,6 +666,13 @@ class MOEFileGenerator {
     return $moeFile->getPath();
   }
 
+  /**
+   * Returns true if the students FIRST ATTENDANCE is before the collection date
+   * and LAST ATTENDANCE is null or after the collection date
+   * @param  DateTime $collectionDate
+   * @param  Array $student
+   * @return boolean
+   */
   private static function studentAttendingForDate($collectionDate, $student) {
     $nzdt = new DateTimeZone('Pacific/Auckland');
     $startDate = new DateTime($student['start_date'], $nzdt);
@@ -674,6 +681,12 @@ class MOEFileGenerator {
       (is_null($lastAttendance) || $lastAttendance->getTimestamp() >= $collectionDate->getTimestamp));
   }
 
+  /**
+   * Returns the collection date for the given month code and year
+   * @param  String $collectionMonth Collection month code 
+   * @param  String $collectionYear  Collection year
+   * @return DateTime
+   */
   private static function collectionDate($collectionMonth, $collectionYear) {
     $collectionDate;
     $nzdt = new DateTimeZone('Pacific/Auckland');
@@ -821,6 +834,14 @@ class MOEFileGenerator {
     return $m3Data;
   }
 
+  /**
+   * Returns an array of highest level of maori language learning,
+   * equivalent to tables M4, J7 etc
+   * @param  String $collectionMonth ['M','E','J','S'] Used to calculate the cutoff date for roll collection
+   * @param  String $collectionYear  Year used to calculate cutoff date for roll collection
+   * @param  Array $students         Array of students included in roll
+   * @return Array                   Array of totals indexed by maori level (MLL1 etc), 'total' or 'maori', then year level
+   */
   private static function calculateHighestLevelMaori($collectionMonth, $collectionYear, $students) {
     $studentFilter = function($collectionDate, $student) {
       // Student TYPE in [EX, RA, AD, RE, TPREOM, TPRAOM]
@@ -886,11 +907,13 @@ class MOEFileGenerator {
             $column = 'MLL6';
             break;
         }
+        //Maori students are counted separately
         if ($student['ethnic_origin'] == '211' ||
           $student['ethnic_origin2'] == '211' ||
           $student['ethnic_origin3'] == '211') {
           $m4Data[$column]['maori'][$yearLevel]++;
         }
+        //All students regardless of race 
         $m4Data[$column]['total'][$yearLevel]++;
       }
     }
