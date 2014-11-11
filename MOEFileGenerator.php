@@ -909,4 +909,36 @@ class MOEFileGenerator {
 
     return $highestLevelMaori;
   }
+
+  /**
+   * Returns an array of .moe files (version and path) for a given collection period
+   * @param  String  $collectionMonth Collection month
+   * @param  String  $collectionYear  Collection year
+   * @param  boolean $isDraft         True if this is a draft return period
+   * @return Array
+   */
+  public static function getMOEFiles($collectionMonth, $collectionYear, $isDraft) {
+    $findRollReturnSql = 'SELECT * FROM `roll_return_period` WHERE ' .
+      '`month` = :month AND `year` = :year AND `mode` = :mode';
+
+    $mode = $isDraft ? 'DRAFT' : 'OFFICIAL';
+
+    $findRollReturnBind = array(
+      'month' => $collectionMonth,
+      'year' => $collectionYear,
+      'mode' => $mode
+    );
+
+    $db = DBUtil::getConnection();
+
+    $returnPeriod = $db->fetchOne($findRollReturnSql, $findRollReturnBind);
+
+    assert($returnPeriod !== false, 'Return period not found');
+
+    //Fetch all .moe files created for this period
+    $lastFileSql = 'SELECT * FROM moe_file WHERE roll_return_period_id = :roll_return_period_id';
+    $moeFiles = $db->fetchAll($lastFileSql, array('roll_return_period_id' => $returnPeriod['id']));
+
+    return $moeFiles;
+  }
 }
