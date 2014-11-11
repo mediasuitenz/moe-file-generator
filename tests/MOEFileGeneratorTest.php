@@ -18,7 +18,8 @@ function moeDataArray() {
       'collectionMonth' => 'M',
       'collectionYear' => '2015',
       'enrolmentScheme' => 'N',
-      'isDraft' => true
+      'isDraft' => true,
+      'approver' => 'RoseKennedy'
     ),
     'students' => array(
     )
@@ -161,10 +162,12 @@ class MOEFileGeneratorTest extends PHPUnit_Framework_TestCase {
     $dataArray['meta']['schoolNumber'] = '4';
 
     $student2 = StudentData::getStudent();
+    $student2['funding_year_level'] = '9';
     $student2['FTE'] = '0.8';
     array_push($dataArray['students'], $student2);
 
     $student3 = StudentData::getStudent();
+    $student3['funding_year_level'] = '9';
     $student3['FTE'] = '0.3';
     array_push($dataArray['students'], $student3);
 

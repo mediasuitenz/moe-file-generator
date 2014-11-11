@@ -44,7 +44,7 @@ class MOEFileGenerator {
    *     'collectionYear' => '2015',
    *     'enrolmentScheme' => '',
    *     'enrolmentSchemeDate' => '',
-   *     'authorisingUser' => '',
+   *     'approver' => '',
    *     'schoolNumber' => '',
    *     'isDraft' => true'
    *   ),
@@ -82,6 +82,8 @@ class MOEFileGenerator {
       $enrolmentSchemeDate = $dataArray['meta']['enrolmentSchemeDate'];
     }
 
+    $schoolRollByType = self::calculateSchoolRollByType($collectionMonth, $collectionYear, $dataArray['students']);
+    $highestLevelMaori = self::calculateHighestLevelMaori($collectionMonth, $collectionYear, $dataArray['students']);
 
     //Write the header
     $moeFile->writeLine(array(
@@ -90,7 +92,7 @@ class MOEFileGenerator {
       $collectionMonth,
       $collectionYear,
       $dataArray['meta']['schoolNumber'],
-      self::calculateFTETotal($collectionMonth, $collectionYear, $dataArray['students']),
+      $schoolRollByType['total'],
       $dataArray['meta']['enrolmentScheme'],
       $enrolmentSchemeDate
     ));
@@ -366,40 +368,326 @@ class MOEFileGenerator {
       ));
     }
 
+    $nzdt = new DateTimeZone('Pacific/Auckland');
+    $now = new DateTime('now', $nzdt);
+
+    //Write Footer
+    $moeFile->writeLine(array(
+      'Footer',
+      count($dataArray['students']),
+      $now->format('Ymd'),
+      $now->format('Hi'),
+      $dataArray['meta']['approver'],
+      $now->format('Ymd'),
+      $now->format('Hi')
+    ));
+
+    //M3 Table equivalent
+    $moeFile->writeLine(array(
+      'FR',
+      $schoolRollByType['FR']['M']['1'],
+      $schoolRollByType['FR']['M']['2'],
+      $schoolRollByType['FR']['M']['3'],
+      $schoolRollByType['FR']['M']['4'],
+      $schoolRollByType['FR']['M']['5'],
+      $schoolRollByType['FR']['M']['6'],
+      $schoolRollByType['FR']['M']['7'],
+      $schoolRollByType['FR']['M']['8'],
+      $schoolRollByType['FR']['M']['9'],
+      $schoolRollByType['FR']['M']['10'],
+      $schoolRollByType['FR']['M']['11'],
+      $schoolRollByType['FR']['M']['12'],
+      $schoolRollByType['FR']['M']['13'],
+      $schoolRollByType['FR']['M']['14'],
+      $schoolRollByType['FR']['M']['15'],
+      $schoolRollByType['FR']['F']['1'],
+      $schoolRollByType['FR']['F']['2'],
+      $schoolRollByType['FR']['F']['3'],
+      $schoolRollByType['FR']['F']['4'],
+      $schoolRollByType['FR']['F']['5'],
+      $schoolRollByType['FR']['F']['6'],
+      $schoolRollByType['FR']['F']['7'],
+      $schoolRollByType['FR']['F']['8'],
+      $schoolRollByType['FR']['F']['9'],
+      $schoolRollByType['FR']['F']['10'],
+      $schoolRollByType['FR']['F']['11'],
+      $schoolRollByType['FR']['F']['12'],
+      $schoolRollByType['FR']['F']['13'],
+      $schoolRollByType['FR']['F']['14'],
+      $schoolRollByType['FR']['F']['15']
+    ));
+    $moeFile->writeLine(array(
+      'PR',
+      $schoolRollByType['PR']['M']['9'],
+      $schoolRollByType['PR']['M']['10'],
+      $schoolRollByType['PR']['M']['11'],
+      $schoolRollByType['PR']['M']['12'],
+      $schoolRollByType['PR']['M']['13'],
+      $schoolRollByType['PR']['M']['14'],
+      $schoolRollByType['PR']['M']['15'],
+      $schoolRollByType['PR']['F']['9'],
+      $schoolRollByType['PR']['F']['10'],
+      $schoolRollByType['PR']['F']['11'],
+      $schoolRollByType['PR']['F']['12'],
+      $schoolRollByType['PR']['F']['13'],
+      $schoolRollByType['PR']['F']['14'],
+      $schoolRollByType['PR']['F']['15']
+    ));
+    $moeFile->writeLine(array(
+      'FA',
+      $schoolRollByType['FA']['M']['9'],
+      $schoolRollByType['FA']['M']['10'],
+      $schoolRollByType['FA']['M']['11'],
+      $schoolRollByType['FA']['M']['12'],
+      $schoolRollByType['FA']['M']['13'],
+      $schoolRollByType['FA']['M']['14'],
+      $schoolRollByType['FA']['M']['15'],
+      $schoolRollByType['FA']['F']['9'],
+      $schoolRollByType['FA']['F']['10'],
+      $schoolRollByType['FA']['F']['11'],
+      $schoolRollByType['FA']['F']['12'],
+      $schoolRollByType['FA']['F']['13'],
+      $schoolRollByType['FA']['F']['14'],
+      $schoolRollByType['FA']['F']['15']
+    ));
+    $moeFile->writeLine(array(
+      'PA',
+      $schoolRollByType['PA']['M']['9'],
+      $schoolRollByType['PA']['M']['10'],
+      $schoolRollByType['PA']['M']['11'],
+      $schoolRollByType['PA']['M']['12'],
+      $schoolRollByType['PA']['M']['13'],
+      $schoolRollByType['PA']['M']['14'],
+      $schoolRollByType['PA']['M']['15'],
+      $schoolRollByType['PA']['F']['9'],
+      $schoolRollByType['PA']['F']['10'],
+      $schoolRollByType['PA']['F']['11'],
+      $schoolRollByType['PA']['F']['12'],
+      $schoolRollByType['PA']['F']['13'],
+      $schoolRollByType['PA']['F']['14'],
+      $schoolRollByType['PA']['F']['15']
+    ));
+    $moeFile->writeLine(array(
+      'ST',
+      $schoolRollByType['ST']['M']['9'],
+      $schoolRollByType['ST']['M']['10'],
+      $schoolRollByType['ST']['M']['11'],
+      $schoolRollByType['ST']['M']['12'],
+      $schoolRollByType['ST']['M']['13'],
+      $schoolRollByType['ST']['M']['14'],
+      $schoolRollByType['ST']['M']['15'],
+      $schoolRollByType['ST']['F']['9'],
+      $schoolRollByType['ST']['F']['10'],
+      $schoolRollByType['ST']['F']['11'],
+      $schoolRollByType['ST']['F']['12'],
+      $schoolRollByType['ST']['F']['13'],
+      $schoolRollByType['ST']['F']['14'],
+      $schoolRollByType['ST']['F']['15']
+    ));
+    $moeFile->writeLine(array(
+      'AE',
+      $schoolRollByType['AE']['M']['9'],
+      $schoolRollByType['AE']['M']['10'],
+      $schoolRollByType['AE']['M']['11'],
+      $schoolRollByType['AE']['M']['12'],
+      $schoolRollByType['AE']['M']['13'],
+      $schoolRollByType['AE']['M']['14'],
+      $schoolRollByType['AE']['M']['15'],
+      $schoolRollByType['AE']['F']['9'],
+      $schoolRollByType['AE']['F']['10'],
+      $schoolRollByType['AE']['F']['11'],
+      $schoolRollByType['AE']['F']['12'],
+      $schoolRollByType['AE']['F']['13'],
+      $schoolRollByType['AE']['F']['14'],
+      $schoolRollByType['AE']['F']['15']
+    ));
+    $moeFile->writeLine(array(
+      'FF',
+      $schoolRollByType['FF']['M']['1'],
+      $schoolRollByType['FF']['M']['2'],
+      $schoolRollByType['FF']['M']['3'],
+      $schoolRollByType['FF']['M']['4'],
+      $schoolRollByType['FF']['M']['5'],
+      $schoolRollByType['FF']['M']['6'],
+      $schoolRollByType['FF']['M']['7'],
+      $schoolRollByType['FF']['M']['8'],
+      $schoolRollByType['FF']['M']['9'],
+      $schoolRollByType['FF']['M']['10'],
+      $schoolRollByType['FF']['M']['11'],
+      $schoolRollByType['FF']['M']['12'],
+      $schoolRollByType['FF']['M']['13'],
+      $schoolRollByType['FF']['M']['14'],
+      $schoolRollByType['FF']['M']['15'],
+      $schoolRollByType['FF']['F']['1'],
+      $schoolRollByType['FF']['F']['2'],
+      $schoolRollByType['FF']['F']['3'],
+      $schoolRollByType['FF']['F']['4'],
+      $schoolRollByType['FF']['F']['5'],
+      $schoolRollByType['FF']['F']['6'],
+      $schoolRollByType['FF']['F']['7'],
+      $schoolRollByType['FF']['F']['8'],
+      $schoolRollByType['FF']['F']['9'],
+      $schoolRollByType['FF']['F']['10'],
+      $schoolRollByType['FF']['F']['11'],
+      $schoolRollByType['FF']['F']['12'],
+      $schoolRollByType['FF']['F']['13'],
+      $schoolRollByType['FF']['F']['14'],
+      $schoolRollByType['FF']['F']['15']
+    ));
+
+    //M4 Table equivalent
+    $moeFile->writeLine(array(
+      'MLL1',
+      $highestLevelMaori['MLL1']['total']['1'],
+      $highestLevelMaori['MLL1']['total']['2'],
+      $highestLevelMaori['MLL1']['total']['3'],
+      $highestLevelMaori['MLL1']['total']['4'],
+      $highestLevelMaori['MLL1']['total']['5'],
+      $highestLevelMaori['MLL1']['total']['6'],
+      $highestLevelMaori['MLL1']['total']['7'],
+      $highestLevelMaori['MLL1']['total']['8'],
+      $highestLevelMaori['MLL1']['total']['9'],
+      $highestLevelMaori['MLL1']['total']['10'],
+      $highestLevelMaori['MLL1']['total']['11'],
+      $highestLevelMaori['MLL1']['total']['12'],
+      $highestLevelMaori['MLL1']['total']['13'],
+      $highestLevelMaori['MLL1']['total']['14'],
+      $highestLevelMaori['MLL1']['total']['15']
+    ));
+    $moeFile->writeLine(array(
+      'MLL2',
+      $highestLevelMaori['MLL2']['total']['1'],
+      $highestLevelMaori['MLL2']['total']['2'],
+      $highestLevelMaori['MLL2']['total']['3'],
+      $highestLevelMaori['MLL2']['total']['4'],
+      $highestLevelMaori['MLL2']['total']['5'],
+      $highestLevelMaori['MLL2']['total']['6'],
+      $highestLevelMaori['MLL2']['total']['7'],
+      $highestLevelMaori['MLL2']['total']['8'],
+      $highestLevelMaori['MLL2']['total']['9'],
+      $highestLevelMaori['MLL2']['total']['10'],
+      $highestLevelMaori['MLL2']['total']['11'],
+      $highestLevelMaori['MLL2']['total']['12'],
+      $highestLevelMaori['MLL2']['total']['13'],
+      $highestLevelMaori['MLL2']['total']['14'],
+      $highestLevelMaori['MLL2']['total']['15']
+    ));
+    $moeFile->writeLine(array(
+      'MLL3',
+      $highestLevelMaori['MLL3']['total']['1'],
+      $highestLevelMaori['MLL3']['total']['2'],
+      $highestLevelMaori['MLL3']['total']['3'],
+      $highestLevelMaori['MLL3']['total']['4'],
+      $highestLevelMaori['MLL3']['total']['5'],
+      $highestLevelMaori['MLL3']['total']['6'],
+      $highestLevelMaori['MLL3']['total']['7'],
+      $highestLevelMaori['MLL3']['total']['8'],
+      $highestLevelMaori['MLL3']['total']['9'],
+      $highestLevelMaori['MLL3']['total']['10'],
+      $highestLevelMaori['MLL3']['total']['11'],
+      $highestLevelMaori['MLL3']['total']['12'],
+      $highestLevelMaori['MLL3']['total']['13'],
+      $highestLevelMaori['MLL3']['total']['14'],
+      $highestLevelMaori['MLL3']['total']['15']
+    ));
+    $moeFile->writeLine(array(
+      'MLL4A',
+      $highestLevelMaori['MLL4A']['total']['1'],
+      $highestLevelMaori['MLL4A']['total']['2'],
+      $highestLevelMaori['MLL4A']['total']['3'],
+      $highestLevelMaori['MLL4A']['total']['4'],
+      $highestLevelMaori['MLL4A']['total']['5'],
+      $highestLevelMaori['MLL4A']['total']['6'],
+      $highestLevelMaori['MLL4A']['total']['7'],
+      $highestLevelMaori['MLL4A']['total']['8'],
+      $highestLevelMaori['MLL4A']['total']['9'],
+      $highestLevelMaori['MLL4A']['total']['10'],
+      $highestLevelMaori['MLL4A']['total']['11'],
+      $highestLevelMaori['MLL4A']['total']['12'],
+      $highestLevelMaori['MLL4A']['total']['13'],
+      $highestLevelMaori['MLL4A']['total']['14'],
+      $highestLevelMaori['MLL4A']['total']['15']
+    ));
+    $moeFile->writeLine(array(
+      'MLL4B',
+      $highestLevelMaori['MLL4B']['total']['1'],
+      $highestLevelMaori['MLL4B']['total']['2'],
+      $highestLevelMaori['MLL4B']['total']['3'],
+      $highestLevelMaori['MLL4B']['total']['4'],
+      $highestLevelMaori['MLL4B']['total']['5'],
+      $highestLevelMaori['MLL4B']['total']['6'],
+      $highestLevelMaori['MLL4B']['total']['7'],
+      $highestLevelMaori['MLL4B']['total']['8'],
+      $highestLevelMaori['MLL4B']['total']['9'],
+      $highestLevelMaori['MLL4B']['total']['10'],
+      $highestLevelMaori['MLL4B']['total']['11'],
+      $highestLevelMaori['MLL4B']['total']['12'],
+      $highestLevelMaori['MLL4B']['total']['13'],
+      $highestLevelMaori['MLL4B']['total']['14'],
+      $highestLevelMaori['MLL4B']['total']['15']
+    ));
+    $moeFile->writeLine(array(
+      'MLL5',
+      $highestLevelMaori['MLL5']['total']['1'],
+      $highestLevelMaori['MLL5']['total']['2'],
+      $highestLevelMaori['MLL5']['total']['3'],
+      $highestLevelMaori['MLL5']['total']['4'],
+      $highestLevelMaori['MLL5']['total']['5'],
+      $highestLevelMaori['MLL5']['total']['6'],
+      $highestLevelMaori['MLL5']['total']['7'],
+      $highestLevelMaori['MLL5']['total']['8'],
+      $highestLevelMaori['MLL5']['total']['9'],
+      $highestLevelMaori['MLL5']['total']['10'],
+      $highestLevelMaori['MLL5']['total']['11'],
+      $highestLevelMaori['MLL5']['total']['12'],
+      $highestLevelMaori['MLL5']['total']['13'],
+      $highestLevelMaori['MLL5']['total']['14'],
+      $highestLevelMaori['MLL5']['total']['15']
+    ));
+    $moeFile->writeLine(array(
+      'MLL6',
+      $highestLevelMaori['MLL6']['total']['1'],
+      $highestLevelMaori['MLL6']['total']['2'],
+      $highestLevelMaori['MLL6']['total']['3'],
+      $highestLevelMaori['MLL6']['total']['4'],
+      $highestLevelMaori['MLL6']['total']['5'],
+      $highestLevelMaori['MLL6']['total']['6'],
+      $highestLevelMaori['MLL6']['total']['7'],
+      $highestLevelMaori['MLL6']['total']['8'],
+      $highestLevelMaori['MLL6']['total']['9'],
+      $highestLevelMaori['MLL6']['total']['10'],
+      $highestLevelMaori['MLL6']['total']['11'],
+      $highestLevelMaori['MLL6']['total']['12'],
+      $highestLevelMaori['MLL6']['total']['13'],
+      $highestLevelMaori['MLL6']['total']['14'],
+      $highestLevelMaori['MLL6']['total']['15']
+    ));
+
     return $moeFile->getPath();
   }
 
   /**
-   * Calculates the total FTE for students in type FF, EX, AE, RA, AD ,RE, TPREOM and TPRAOM
-   * who have FIRST ATTENDANCE before march first of collection year and last attendance null
-   * or after march first of colleciton year
-   *
-   * Based on total for table M3, E3, J3 or S3 depending on collection month
-   * @param  String $collectionMonth
-   * @param  String $collectionYear
-   * @param  Array  $studentArray
-   * @return String FTE Total
+   * Returns true if the students FIRST ATTENDANCE is before the collection date
+   * and LAST ATTENDANCE is null or after the collection date
+   * @param  DateTime $collectionDate
+   * @param  Array $student
+   * @return boolean
    */
-  private static function calculateFTETotal($collectionMonth, $collectionYear, $studentArray) {
+  private static function studentAttendingForDate($collectionDate, $student) {
+    $nzdt = new DateTimeZone('Pacific/Auckland');
+    $startDate = new DateTime($student['start_date'], $nzdt);
+    $lastAttendance = empty($student['LAST ATTENDANCE']) ? null : new DateTime($student['LAST ATTENDANCE'], $nzdt);
+    return ($startDate->getTimestamp() <= $collectionDate->getTimestamp() &&
+      (is_null($lastAttendance) || $lastAttendance->getTimestamp() >= $collectionDate->getTimestamp));
+  }
 
-    /**
-     * Returns true if student type is valid for counting roll
-     * and student start and end dates are valid for given collection date
-     * @param  DateTime $collectionDate
-     * @param  Array    $student
-     * @return boolean
-     */
-    $studentFilter = function($collectionDate, $student) {
-      $nzdt = new DateTimeZone('Pacific/Auckland');
-      $startDate = new DateTime($student['start_date'], $nzdt);
-      $lastAttendance = empty($student['LAST ATTENDANCE']) ? null : new DateTime($student['LAST ATTENDANCE'], $nzdt);
-      $validStudentTypes = array('FF', 'EX', 'AE', 'RA', 'AD', 'RE', 'TPREOM', 'TPRAOM');
-      return (in_array($student['TYPE'], $validStudentTypes) &&
-        $startDate->getTimestamp() <= $collectionDate->getTimestamp() &&
-        (is_null($lastAttendance) || $lastAttendance->getTimestamp() >= $collectionDate->getTimestamp));
-    };
-
-    // Student TYPE in [FF, EX, AE, RA, AD, RE, TPREOM, TPRAOM]
+  /**
+   * Returns the collection date for the given month code and year
+   * @param  String $collectionMonth Collection month code 
+   * @param  String $collectionYear  Collection year
+   * @return DateTime
+   */
+  private static function collectionDate($collectionMonth, $collectionYear) {
     $collectionDate;
     $nzdt = new DateTimeZone('Pacific/Auckland');
     switch ($collectionMonth) {
@@ -409,30 +697,230 @@ class MOEFileGenerator {
         $collectionDate = new DateTime($collectionYear . '-03-01', $nzdt);
         break;
       case 'E':
-        // and FIRST ATTENDANCE is <=31 May 2015
-        // and LAST ATTENDANCE is Null or >=31 May 2015
-        $collectionDate = new DateTime($collectionYear . '-05-31');
+        //The specs for Table E3 have an error. The cut-off date is 28 May 2015.
+        $collectionDate = new DateTime($collectionYear . '-05-28');
         break;
       case 'J':
         // and FIRST ATTENDANCE is <= 1 July 2015
         // and LAST ATTENDANCE is Null or >=1 July2015
-        $collectionDate = new DateTime($collectionYear . '07-01');
+        $collectionDate = new DateTime($collectionYear . '-07-01');
         break;
       case 'S':
         // and FIRST ATTENDANCE is <=2 September 2015 or Roll count day
         // and LAST ATTENDANCE is Null or >=2 September 2015 or roll count day
-        $collectionDate = new DateTime($collectionYear . '09-02');
+        $collectionDate = new DateTime($collectionYear . '-09-02');
         break;
     }
+    return $collectionDate;
+  }
 
-    $total = '0';
+  /**
+   * Calculates the FTE for students in type FF, EX, AE, RA, AD ,RE, TPREOM and TPRAOM
+   * who have FIRST ATTENDANCE before march first of collection year and last attendance null
+   * or after march first of colleciton year
+   *
+   * Based on total for table M3, E3, J3 or S3 depending on collection month
+   * @param  String $collectionMonth
+   * @param  String $collectionYear
+   * @param  Array  $studentArray
+   * @return String FTE Total
+   */
+  private static function calculateSchoolRollByType($collectionMonth, $collectionYear, $studentArray) {
+
+    /**
+     * Returns true if student type is valid for counting roll
+     * and student start and end dates are valid for given collection date
+     * @param  DateTime $collectionDate
+     * @param  Array    $student
+     * @return boolean
+     */
+    $studentFilter = function($collectionDate, $student) {
+      $validStudentTypes = array('FF', 'EX', 'AE', 'RA', 'AD', 'RE', 'TPREOM', 'TPRAOM');
+      return (in_array($student['TYPE'], $validStudentTypes) &&
+        self::studentAttendingForDate($collectionDate, $student));
+    };
+
+
+    $rollByType = array(
+      'total' => '0'
+    );
+
+    //Columns (student types)
+    //FR - Number of Full Time Regular
+    //PR - FTE of Part Time Regular
+    //FA - Full Time Adult
+    //PA - Part Time Adult
+    //ST - Secondary Tertiary Program
+    //AE - Alternative Education
+    //FF - International Fee Paying
+
+    //Fill initial totals with 0
+    $collectedTypes = ['FR', 'PR', 'FA', 'PA', 'ST', 'AE', 'FF'];
+    foreach ($collectedTypes as $type) {
+      $rollByType[$type] = array(
+        'M' => array(
+        ),
+        'F' => array(
+        )
+      );
+      //All student types get values from 9 to 15 (secondary)
+      for ($i = 9; $i <= 15; $i++) {
+        $rollByType[$type]['M'][$i] = '0';
+        $rollByType[$type]['F'][$i] = '0';
+      }
+    }
+    //FR  and FF get additional values from 1 to 8 (primary)
+    for ($i = 1; $i <= 8; $i++) {
+      $rollByType['FR']['M'][$i] = '0';
+      $rollByType['FR']['F'][$i] = '0';
+      $rollByType['FF']['M'][$i] = '0';
+      $rollByType['FF']['F'][$i] = '0';
+    }
+
+    $collectionDate = self::collectionDate($collectionMonth, $collectionYear);
+    $nzdt = new DateTimeZone('Pacific/Auckland');
+    $january1 = new DateTime($collectionYear . '-01-01', $nzdt);
+
+    $stpList = ['1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16','17','18','19','20','21','22'];
 
     foreach ($studentArray as $student) {
+
       if ($studentFilter($collectionDate, $student)) {
-        $total = bcadd($total, $student['FTE'], 1);
+
+        $yearLevel = $student['funding_year_level'];
+        $gender = $student['gender'];
+        $dob = new DateTime($student['dob'], $nzdt);
+        $ageAtJan1 = $dob->diff($january1)->y;
+
+        // Students with STP (Secondary Tertiary Programme) in (1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22) 
+        // should be reported in the FTE of Secondary Tertiary Programme Students 
+        // column, unless student type is FF or AE.
+        if ($student['TYPE'] === 'FF') {
+          $column = 'FF';
+        } else if ($student['TYPE'] === 'AE') {
+          $column = 'AE';
+        } else if (in_array($student['STP'], $stpList)) {
+          $column = 'ST';
+        } else {
+          if ($ageAtJan1 < 19) {
+            //Regular
+            if (bccomp($student['FTE'], '1', 1) === 0) {
+              //Full time
+              $column = 'FR';
+            } else {
+              //Part time
+              $column = 'PR';
+            }
+          } else {
+            //Adult
+            if (bccomp($student['FTE'], '1', 1) === 0) {
+              //Full time
+              $column = 'FA';
+            } else {
+              //Part time
+              $column = 'PA';
+            }
+          }
+        }
+
+        $cell = bcadd($rollByType[$column][$gender][$yearLevel], $student['FTE'], 1);
+        //Trim trailing .0
+        if (substr($cell, -2) === '.0') {
+          $cell = substr($cell, 0, strlen($cell) - 2);
+        }
+        $rollByType[$column][$gender][$yearLevel] = $cell;
+        $rollByType['total'] = bcadd($rollByType['total'], $student['FTE'], 1);
       }
     }
 
-    return $total;
+    return $rollByType;
+  }
+
+  /**
+   * Returns an array of highest level of maori language learning,
+   * equivalent to tables M4, J7 etc
+   * @param  String $collectionMonth ['M','E','J','S'] Used to calculate the cutoff date for roll collection
+   * @param  String $collectionYear  Year used to calculate cutoff date for roll collection
+   * @param  Array $students         Array of students included in roll
+   * @return Array                   Array of totals indexed by maori level (MLL1 etc), 'total' or 'maori', then year level
+   */
+  private static function calculateHighestLevelMaori($collectionMonth, $collectionYear, $students) {
+    $studentFilter = function($collectionDate, $student) {
+      // Student TYPE in [EX, RA, AD, RE, TPREOM, TPRAOM]
+      // and MĀORI=not Null
+      $allowedTypes = ['EX', 'RA', 'AD', 'RE', 'TPREOM', 'TPRAOM'];
+      return (in_array($student['TYPE'], $allowedTypes) &&
+        !empty($student['MAORI']) &&
+        self::studentAttendingForDate($collectionDate, $student));
+    };
+
+    $collectionDate = self::collectionDate($collectionMonth, $collectionYear);
+
+    $m4Columns = array(
+      'MLL1',
+      'MLL2',
+      'MLL3',
+      'MLL4A',
+      'MLL4B',
+      'MLL5',
+      'MLL6'
+    );
+
+    $highestLevelMaori = array();
+
+    //Populate highestLevelMaori with 0 values
+    foreach($m4Columns as $column) {
+      $highestLevelMaori[$column] = array(
+        'total' => array(),
+        'maori' => array()
+      );
+      for ($i = 0; $i <= 15; $i++) {
+        $highestLevelMaori[$column]['total'][$i] = 0;
+        $highestLevelMaori[$column]['maori'][$i] = 0;
+      }
+    }
+    foreach($students as $student) {
+      if ($studentFilter($collectionDate, $student)) {
+        $yearLevel = $student['funding_year_level'];
+        //Column was being re-used here from last loop
+        $column = null;
+        switch ($student['MAORI']) {
+          case ('H'):
+            $column = 'MLL1';
+            break;
+          case ('G'):
+            $column = 'MLL1';
+            break;
+          case ('F'):
+            $column = 'MLL2';
+            break;
+          case ('E'):
+            $column = 'MLL3';
+            break;
+          case ('D'):
+            $column = 'MLL4A';
+            break;
+          case ('C'):
+            $column = 'MLL4B';
+            break;
+          case ('B'):
+            $column = 'MLL5';
+            break;
+          case ('A'):
+            $column = 'MLL6';
+            break;
+        }
+        //Maori students are counted separately
+        if ($student['ethnic_origin'] == '211' ||
+          $student['ethnic_origin2'] == '211' ||
+          $student['ethnic_origin3'] == '211') {
+          $highestLevelMaori[$column]['maori'][$yearLevel]++;
+        }
+        //All students regardless of race 
+        $highestLevelMaori[$column]['total'][$yearLevel]++;
+      }
+    }
+
+    return $highestLevelMaori;
   }
 }
