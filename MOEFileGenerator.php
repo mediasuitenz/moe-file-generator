@@ -54,8 +54,6 @@ class MOEFileGenerator {
       $collectionMonth,
       $collectionYear,
       $dataArray['meta']['isDraft'],
-      //TODO: Get version
-      '1',
       Config::getConfig()['moeFileDirectory']
     );
 
