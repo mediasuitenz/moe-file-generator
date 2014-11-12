@@ -809,13 +809,20 @@ class MOEFileGenerator {
           }
         }
 
-        $cell = bcadd($rollByType[$column][$gender][$yearLevel], $student['FTE'], 1);
-        //Trim trailing .0
-        if (substr($cell, -2) === '.0') {
-          $cell = substr($cell, 0, strlen($cell) - 2);
+        // J3 Table data is the number of students, not the FTE
+        if ($collectionMonth === 'J') {
+          $cell = $rollByType[$column][$gender][$yearLevel] + 1;
+          $rollByType[$column][$gender][$yearLevel] = $cell;
+          $rollByType['total'] += 1;
+        } else {
+          $cell = bcadd($rollByType[$column][$gender][$yearLevel], $student['FTE'], 1);
+          //Trim trailing .0
+          if (substr($cell, -2) === '.0') {
+            $cell = substr($cell, 0, strlen($cell) - 2);
+          }
+          $rollByType[$column][$gender][$yearLevel] = $cell;
+          $rollByType['total'] = bcadd($rollByType['total'], $student['FTE'], 1);
         }
-        $rollByType[$column][$gender][$yearLevel] = $cell;
-        $rollByType['total'] = bcadd($rollByType['total'], $student['FTE'], 1);
       }
     }
 
@@ -834,8 +841,11 @@ class MOEFileGenerator {
     $studentFilter = function($collectionDate, $student) {
       // Student TYPE in [EX, RA, AD, RE, TPREOM, TPRAOM]
       // and MĀORI=not Null
+      // Exclusions Students with STP in (1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22)
       $allowedTypes = ['EX', 'RA', 'AD', 'RE', 'TPREOM', 'TPRAOM'];
+      $excludedStp = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22];
       return (in_array($student['TYPE'], $allowedTypes) &&
+        !in_array($student['STP'], $excludedStp) &&
         !empty($student['MAORI']) &&
         self::studentAttendingForDate($collectionDate, $student));
     };
