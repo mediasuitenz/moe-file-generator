@@ -664,7 +664,7 @@ class MOEFileGenerator {
     $startDate = new DateTime($student['start_date'], $nzdt);
     $lastAttendance = empty($student['LAST ATTENDANCE']) ? null : new DateTime($student['LAST ATTENDANCE'], $nzdt);
     return ($startDate->getTimestamp() <= $collectionDate->getTimestamp() &&
-      (is_null($lastAttendance) || $lastAttendance->getTimestamp() >= $collectionDate->getTimestamp));
+      (is_null($lastAttendance) || $lastAttendance->getTimestamp() >= $collectionDate->getTimestamp()));
   }
 
   /**
