@@ -200,4 +200,12 @@ class MOEFileGeneratorTest extends PHPUnit_Framework_TestCase {
     $this->assertSame(count($student), 132);
   }
 
+  public function testGetMOEFiles() {
+    $moeFiles = MOEFileGenerator\MOEFileGenerator::getMOEFiles('M', '2015', false);
+
+    $this->assertSame(is_array($moeFiles), true);
+
+    $this->assertSame(!empty($moeFiles), true);
+  }
+
 }

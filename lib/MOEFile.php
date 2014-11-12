@@ -87,7 +87,7 @@ class MOEFile {
     $lastFileSql = 'SELECT * FROM moe_file WHERE roll_return_period_id = :roll_return_period_id ORDER BY version DESC';
     $lastFile = $db->fetchOne($lastFileSql, array('roll_return_period_id' => $returnPeriod['id']));
 
-    if ($lastFile) {
+    if ($lastFile !== false) {
      //Increment version
       $version = $lastFile['version'] + 1;
     } else {
