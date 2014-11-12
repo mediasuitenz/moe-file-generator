@@ -6,29 +6,11 @@ use DateTimeZone, DateTime;
 //Load libraries installed by composer
 require 'vendor/autoload.php';
 
-//Load config file
-if (getenv('ENVIRONMENT') !== 'TEST') {
-  $config = require dirname(__FILE__).DIRECTORY_SEPARATOR.'config.php';
-} else {
-  $config = require dirname(__FILE__).DIRECTORY_SEPARATOR.'config-test.php';
-}
-
-assert(!is_null($config) && is_array($config), 'config.php must return a valid array of config options');
-
 /**
  * Generates a .moe file from the provided student data
  * and stores it in the directory provided by config.php
  */
 class MOEFileGenerator {
-
-  /**
-   * Returns an array of config variables
-   * @return Array
-   */
-  public static function getConfig() {
-    global $config;
-    return $config;
-  }
 
   /**
    * Generates a .moe file from an array of student and
@@ -72,9 +54,7 @@ class MOEFileGenerator {
       $collectionMonth,
       $collectionYear,
       $dataArray['meta']['isDraft'],
-      //TODO: Get version
-      '1',
-      self::getConfig()['moeFileDirectory']
+      Config::getConfig()['moeFileDirectory']
     );
 
     $enrolmentSchemeDate = '00000000';

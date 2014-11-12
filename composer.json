@@ -1,7 +1,8 @@
 {
     "name": "linc-ed/moe-file-generator",
     "require": {
-        "phpunit/phpunit": "~4.3"
+        "phpunit/phpunit": "~4.3",
+        "aura/sql": "2.1.0"
     },
     "license": "proprietry",
     "authors": [
