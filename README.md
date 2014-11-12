@@ -21,7 +21,7 @@ Require MOEFileGenerator in your code and call generateMOE to create .moe file
 e.g.
 
 ```php
-require_once 'MOEFileGenerator/MOEFileGenerator.php';
+require_once 'moe-file-generator/MOEFileGenerator.php';
 MOEFileGenerator\MOEFileGenerator::generateMOE($data);
 ```
 
@@ -44,3 +44,10 @@ MOEFileGenerator\MOEFileGenerator::generateMOE($data);
 ```
 
 **'students'** is an array of student arrays - all values must be already validated
+
+
+To retrieve a list of .moe files for a specific roll return period call
+```php
+MOEFileGenerator\MOEFileGenerator::getMOEFiles('M', '2015', false);
+```
+Where M is the roll return month for March, 2015 is the year and false is if the roll return period is for drafts.
