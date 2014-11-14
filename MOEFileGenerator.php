@@ -684,17 +684,17 @@ class MOEFileGenerator {
         break;
       case 'E':
         //The specs for Table E3 have an error. The cut-off date is 28 May 2015.
-        $collectionDate = new DateTime($collectionYear . '-05-28');
+        $collectionDate = new DateTime($collectionYear . '-05-28', $nzdt);
         break;
       case 'J':
         // and FIRST ATTENDANCE is <= 1 July 2015
         // and LAST ATTENDANCE is Null or >=1 July2015
-        $collectionDate = new DateTime($collectionYear . '-07-01');
+        $collectionDate = new DateTime($collectionYear . '-07-01', $nzdt);
         break;
       case 'S':
         // and FIRST ATTENDANCE is <=2 September 2015 or Roll count day
         // and LAST ATTENDANCE is Null or >=2 September 2015 or roll count day
-        $collectionDate = new DateTime($collectionYear . '-09-02');
+        $collectionDate = new DateTime($collectionYear . '-09-02', $nzdt);
         break;
     }
     return $collectionDate;
@@ -825,6 +825,7 @@ class MOEFileGenerator {
         }
       }
     }
+
 
     return $rollByType;
   }
