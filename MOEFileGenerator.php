@@ -49,12 +49,14 @@ class MOEFileGenerator {
     $collectionMonth = $dataArray['meta']['collectionMonth'];
     $collectionYear = $dataArray['meta']['collectionYear'];
 
+    $config = Config::getConfig();
+
     $moeFile = new MOEFile(
       $dataArray['meta']['schoolNumber'],
       $collectionMonth,
       $collectionYear,
       $dataArray['meta']['isDraft'],
-      Config::getConfig()['moeFileDirectory']
+      $config['moeFileDirectory']
     );
 
     $enrolmentSchemeDate = '00000000';
